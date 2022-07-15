@@ -8,44 +8,65 @@ namespace Game.Code.Managers
     {
         private const int ArgumentsToConsoleMinCount = 2;
 
+        private LineEdit _consoleInput;
         private Control _debugOverlay;
         private OptionButton _levelsOption;
+        private bool _prevPauseState = false;
 
-        public static DebugManager Instance { get; private set; } = null;
+        public DebugManager()
+        {
+            Debug.Assert(Instance == null);
+            Instance = this;
+        }
+
+        public static DebugManager Instance { get; private set; }
 
         public override void _Input(InputEvent @event)
         {
             if (@event.IsActionPressed("debug"))
             {
-                _debugOverlay.Visible = !_debugOverlay.Visible;
+                if (_debugOverlay.Visible)
+                {
+                    var tree = GetTree();
+                    tree.Paused = _prevPauseState;
+                    _debugOverlay.Visible = false;
+                }
+                else
+                {
+                    var tree = GetTree();
+                    _prevPauseState = tree.Paused;
+                    tree.Paused = true;
+                    _debugOverlay.Visible = true;
+                }
             }
         }
 
         public override void _Ready()
         {
-            Debug.Assert(Instance == null);
-            Instance = this;
-
 #if !DEBUG
             SetProcessInput(false);
             SetPhysicsProcess(false);
             return;
 #endif
+            PauseMode = PauseModeEnum.Process;
 
             _debugOverlay = GetNode<Control>("DebugOverlay");
             _levelsOption = GetNode<OptionButton>("DebugOverlay/Buttons/LevelsOptionButton");
-
+            _consoleInput = GetNode<LineEdit>("DebugOverlay/ConsoleInput");
+            _consoleInput.Connect("text_entered", this, nameof(OnConsoleInputTextEntered));
             GetNode<Button>("DebugOverlay/Buttons/LoadLevelButton").Connect("pressed", this, nameof(OnLoadLevelButtonPressed));
-            GetNode<LineEdit>("DebugOverlay/ConsoleInput").Connect("text_entered", this, nameof(OnConsoleInput));
 
             foreach (var level in SceneManager.Levels.Keys)
             {
                 _levelsOption.AddItem(level);
             }
+
+            _debugOverlay.Visible = false;
         }
 
-        private void OnConsoleInput(string text)
+        private void OnConsoleInputTextEntered(string text)
         {
+            _consoleInput.Text = string.Empty;
             GD.Print(text);
 
             string[] splittedText = text.Split(" ");

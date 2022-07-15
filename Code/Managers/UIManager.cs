@@ -9,7 +9,13 @@ namespace Game.Code.Managers
         private Control _hud;
         private Control _pauseMenu;
 
-        public static UIManager Instance { get; private set; } = null;
+        public UIManager()
+        {
+            Debug.Assert(Instance == null);
+            Instance = this;
+        }
+
+        public static UIManager Instance { get; private set; }
 
         public bool IsHUDVisible
         {
@@ -27,9 +33,6 @@ namespace Game.Code.Managers
 
         public override void _Ready()
         {
-            Debug.Assert(Instance == null);
-            Instance = this;
-
             PauseMode = PauseModeEnum.Process;
 
             _hud = GetNode<Control>("HUD");

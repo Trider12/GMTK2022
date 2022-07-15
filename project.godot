@@ -17,6 +17,7 @@ config/icon="res://Assets/Icons/icon.png"
 [autoload]
 
 UiManager="*res://Scenes/UI/UIManager.tscn"
+DebugManager="*res://Scenes/UI/DebugManager.tscn"
 
 [display]
 
