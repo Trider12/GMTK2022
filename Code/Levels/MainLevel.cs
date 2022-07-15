@@ -9,7 +9,7 @@ namespace Game.Code.Levels
     {
         private const float EnemySpawnInterval = 1f;
         private const float EnemySpawnRadius = 1000f;
-        private static readonly PackedScene EnemyScene = GD.Load<PackedScene>("res://Assets/Scenes/Enemies/Enemy.tscn");
+        private static readonly PackedScene EnemyScene = GD.Load<PackedScene>("res://Scenes/Enemies/Enemy.tscn");
 
         private Timer _enemySpawnTimer = new Timer();
         private Player _player;

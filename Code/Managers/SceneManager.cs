@@ -24,7 +24,7 @@ namespace Game.Code.Managers
         public delegate void OnLevelChange();
 
         public static SceneManager Instance { get; } = new SceneManager();
-        public static Dictionary<string, PackedScene> Levels { get; } = PrefabHelper.LoadPrefabsDictionary("res://Assets/Scenes/Levels", null, true);
+        public static Dictionary<string, PackedScene> Levels { get; } = PrefabHelper.LoadPrefabsDictionary("res://Scenes/Levels", null, true);
 
         public ILevel CurrentLevel { get; private set; } = null;
 

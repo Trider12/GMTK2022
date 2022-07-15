@@ -12,7 +12,7 @@ namespace Game.Code
         private const float BulletSpeed = 500;
         private const int MagSize = 10;
         private const float RateOfFire = 5;
-        private static readonly PackedScene BulletScene = GD.Load<PackedScene>("res://Assets/Scenes/Guns/Bullet.tscn");
+        private static readonly PackedScene BulletScene = GD.Load<PackedScene>("res://Scenes/Guns/Bullet.tscn");
 
         private int _ammoCount = 0;
         private bool _canShoot = true;
