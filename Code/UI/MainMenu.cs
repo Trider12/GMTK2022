@@ -58,9 +58,6 @@ namespace Game.Code.UI
 
         private void ApplySettings()
         {
-            OS.WindowBorderless = _settings.DisplayMode == DisplayMode.Borderless;
-            OS.WindowFullscreen = _settings.DisplayMode == DisplayMode.Fullscreen;
-
             Vector2 resolution = Resolutions[0];
 
             try
@@ -71,9 +68,11 @@ namespace Game.Code.UI
             {
             }
 
+            OS.WindowBorderless = _settings.DisplayMode == DisplayMode.Borderless;
+            OS.WindowFullscreen = _settings.DisplayMode == DisplayMode.Fullscreen;
             OS.WindowSize = _settings.DisplayMode == DisplayMode.Borderless ? OS.GetScreenSize() : resolution;
             OS.CenterWindow();
-            GD.Print("Window Resolution: " + OS.WindowSize + "; Viewport Resolution: " + GetViewport().Size);
+            GD.Print("Window Resolution: " + OS.WindowSize);
 
             AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Master"), GD.Linear2Db(_settings.MasterVolume / 100f));
         }
