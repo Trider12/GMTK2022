@@ -1,15 +1,9 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Code/Levels/JudoLevel.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Textures/Player.png" type="Texture" id=2]
-
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 2 )
-region = Rect2( 64, 0, 64, 64 )
+[ext_resource path="res://Assets/Textures/WhiteSquare.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Textures/EmptyTexture.png" type="Texture" id=4]
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 2 )
@@ -43,13 +37,16 @@ region = Rect2( 3392, 0, 64, 64 )
 atlas = ExtResource( 2 )
 region = Rect2( 3456, 0, 64, 64 )
 
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 64, 64 )
+
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ) ],
-"loop": true,
-"name": "Idle",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ],
 "loop": false,
 "name": "Throw",
@@ -59,13 +56,38 @@ animations = [ {
 "loop": false,
 "name": "InFlight",
 "speed": 5.0
+}, {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
 } ]
+
+[sub_resource type="StyleBoxTexture" id=15]
+texture = ExtResource( 3 )
+region_rect = Rect2( 0, 0, 0, 16 )
+modulate_color = Color( 0.415686, 0.415686, 0.415686, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+[sub_resource type="StyleBoxEmpty" id=14]
+
+[sub_resource type="StyleBoxEmpty" id=16]
+
+[sub_resource type="StyleBoxEmpty" id=17]
+
+[sub_resource type="StyleBoxEmpty" id=18]
+
+[sub_resource type="StyleBoxEmpty" id=19]
+
+[sub_resource type="StyleBoxEmpty" id=20]
 
 [node name="World" type="Node2D"]
 position = Vector2( 0, 2 )
 script = ExtResource( 1 )
 _qteFillDuration = 10.0
-_qteGreenZoneCoverPercentage = 0.2
+_qteGreenZoneCoverPercentage = 0.15
+_qteYellowZoneCoverPercentage = 0.15
 
 [node name="Persons" type="Node2D" parent="."]
 position = Vector2( -1, -32 )
@@ -103,28 +125,49 @@ margin_top = -40.0
 margin_right = 20.0
 alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="QTE/VBoxContainer"]
+[node name="HSlider" type="HSlider" parent="QTE/VBoxContainer"]
+margin_top = 12.0
 margin_right = 232.0
-margin_bottom = 16.0
+margin_bottom = 28.0
+custom_icons/grabber_disabled = ExtResource( 4 )
+custom_icons/grabber_highlight = ExtResource( 4 )
+custom_icons/grabber = ExtResource( 4 )
+custom_styles/slider = SubResource( 15 )
+custom_styles/grabber_area_highlight = SubResource( 13 )
+custom_styles/grabber_area = SubResource( 14 )
+step = 0.1
+value = 26.8
+editable = false
+scrollable = false
+
+[node name="GreenZone" type="ColorRect" parent="QTE/VBoxContainer/HSlider"]
+margin_right = 40.0
+margin_bottom = 20.0
+color = Color( 0.54902, 1, 0.00392157, 0.721569 )
+
+[node name="YellowZone" type="ColorRect" parent="QTE/VBoxContainer/HSlider"]
+margin_right = 40.0
+margin_bottom = 20.0
+color = Color( 1, 0.960784, 0.0235294, 1 )
+
+[node name="ProgressBar" type="ProgressBar" parent="QTE/VBoxContainer"]
+visible = false
+margin_top = 20.0
+margin_right = 232.0
+margin_bottom = 22.0
 rect_clip_content = true
 size_flags_vertical = 3
 value = 20.0
 percent_visible = false
 
-[node name="GreenZone" type="ColorRect" parent="QTE/VBoxContainer/ProgressBar"]
-margin_right = 40.0
-margin_bottom = 40.0
-color = Color( 0.54902, 1, 0.00392157, 0.341176 )
-
-[node name="HBoxContainer" type="HBoxContainer" parent="QTE/VBoxContainer"]
-margin_top = 20.0
-margin_right = 232.0
-margin_bottom = 40.0
-alignment = 1
-
-[node name="Button" type="Button" parent="QTE/VBoxContainer/HBoxContainer"]
-margin_left = 91.0
-margin_right = 141.0
-margin_bottom = 20.0
+[node name="Button" type="Button" parent="QTE"]
+margin_left = -713.0
+margin_top = -710.0
+margin_right = 1252.0
+margin_bottom = 881.0
 size_flags_horizontal = 0
-text = "Throw"
+custom_styles/hover = SubResource( 16 )
+custom_styles/pressed = SubResource( 17 )
+custom_styles/focus = SubResource( 18 )
+custom_styles/disabled = SubResource( 19 )
+custom_styles/normal = SubResource( 20 )
