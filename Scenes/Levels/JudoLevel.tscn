@@ -1,9 +1,10 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Code/Levels/JudoLevel.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Textures/Player.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Textures/WhiteSquare.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Textures/EmptyTexture.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Textures/QTE_Handle.png" type="Texture" id=5]
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 2 )
@@ -115,7 +116,8 @@ alignment = 1
 margin_top = 12.0
 margin_right = 168.0
 margin_bottom = 28.0
-custom_icons/grabber_disabled = ExtResource( 3 )
+rect_clip_content = true
+custom_icons/grabber_disabled = ExtResource( 5 )
 custom_icons/grabber_highlight = ExtResource( 4 )
 custom_icons/grabber = ExtResource( 4 )
 custom_styles/slider = SubResource( 15 )
