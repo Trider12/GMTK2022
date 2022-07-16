@@ -4,6 +4,7 @@
 [ext_resource path="res://Code/Managers/DebugManager.cs" type="Script" id=2]
 
 [node name="DebugManager" type="CanvasLayer"]
+layer = 128
 script = ExtResource( 2 )
 
 [node name="DebugOverlay" type="ColorRect" parent="."]
