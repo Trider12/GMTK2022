@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Code/Levels/JudoLevel.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Textures/Player.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Textures/WhiteSquare.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Textures/EmptyTexture.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Textures/QTE_Handle.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Fonts/Pixel/Pixel-Regular.ttf" type="DynamicFontData" id=7]
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 2 )
@@ -73,6 +74,14 @@ modulate_color = Color( 0.415686, 0.415686, 0.415686, 1 )
 
 [sub_resource type="StyleBoxEmpty" id=14]
 
+[sub_resource type="DynamicFont" id=16]
+size = 10
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=17]
+size = 14
+font_data = ExtResource( 7 )
+
 [node name="JudoLevel" type="Node2D"]
 position = Vector2( 0, 2 )
 script = ExtResource( 1 )
@@ -102,20 +111,11 @@ flip_h = true
 
 [node name="QTE" type="CanvasLayer" parent="."]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="QTE"]
+[node name="HSlider" type="HSlider" parent="QTE"]
 anchor_left = 0.3
-anchor_top = 0.95
+anchor_top = 0.05
 anchor_right = 0.7
-anchor_bottom = 0.95
-margin_left = -20.0
-margin_top = -40.0
-margin_right = 20.0
-alignment = 1
-
-[node name="HSlider" type="HSlider" parent="QTE/VBoxContainer"]
-margin_top = 12.0
-margin_right = 168.0
-margin_bottom = 28.0
+anchor_bottom = 0.05
 rect_clip_content = true
 custom_icons/grabber_disabled = ExtResource( 5 )
 custom_icons/grabber_highlight = ExtResource( 4 )
@@ -128,7 +128,25 @@ value = 26.8
 editable = false
 scrollable = false
 
-[node name="GreenZone" type="ColorRect" parent="QTE/VBoxContainer/HSlider"]
+[node name="GreenZone" type="ColorRect" parent="QTE/HSlider"]
 margin_right = 40.0
 margin_bottom = 20.0
 color = Color( 0.54902, 1, 0.00392157, 0.721569 )
+
+[node name="HurryUpLabel" type="Label" parent="QTE/HSlider"]
+anchor_top = 0.05
+anchor_right = 1.0
+anchor_bottom = 0.05
+custom_fonts/font = SubResource( 16 )
+text = "Hurry up!"
+align = 1
+valign = 1
+
+[node name="StatusLabel" type="Label" parent="QTE"]
+anchor_top = 0.18
+anchor_right = 1.0
+anchor_bottom = 0.18
+custom_fonts/font = SubResource( 17 )
+text = "Perfect!"
+align = 1
+valign = 1
