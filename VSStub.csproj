@@ -26,7 +26,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="Godot Project Template.csproj" />
+    <ProjectReference Include="GMTK2022.csproj">
+      <Project>{4A6F2CEB-3B28-4C55-9378-74DE460744B7}</Project>
+      <Name>GMTK2022</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
