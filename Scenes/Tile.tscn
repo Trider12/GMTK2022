@@ -11,13 +11,9 @@ shader_param/u_color = Color( 0.337255, 0.560784, 0.0980392, 1 )
 
 [node name="Tile" type="Node2D"]
 script = ExtResource( 4 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="Sprite2" type="Sprite" parent="."]
 material = SubResource( 2 )
-position = Vector2( 16, -16 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 28, 28 )
@@ -27,8 +23,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_top = -32.0
-margin_right = 32.0
+margin_left = -16.0
+margin_top = -16.0
+margin_right = 16.0
+margin_bottom = 16.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 custom_fonts/font = ExtResource( 3 )

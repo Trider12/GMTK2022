@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Code/Levels/JudoLevel.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Textures/Player.png" type="Texture" id=2]
@@ -6,44 +6,54 @@
 [ext_resource path="res://Assets/Textures/EmptyTexture.png" type="Texture" id=4]
 
 [sub_resource type="AtlasTexture" id=3]
+flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 1536, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=4]
+flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 1600, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=5]
+flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 1664, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=6]
+flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 1728, 0, 64, 64 )
 
-[sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 2 )
-region = Rect2( 3264, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=9]
-atlas = ExtResource( 2 )
-region = Rect2( 3328, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=10]
-atlas = ExtResource( 2 )
-region = Rect2( 3392, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=11]
-atlas = ExtResource( 2 )
-region = Rect2( 3456, 0, 64, 64 )
-
 [sub_resource type="AtlasTexture" id=1]
+flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 0, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=2]
+flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=8]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 3264, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=9]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 3328, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=10]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 3392, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=11]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 3456, 0, 64, 64 )
 
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
@@ -52,14 +62,14 @@ animations = [ {
 "name": "Throw",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
-"loop": false,
-"name": "InFlight",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 1 ), SubResource( 2 ) ],
 "loop": true,
 "name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
+"loop": false,
+"name": "InFlight",
 "speed": 5.0
 } ]
 
@@ -72,28 +82,14 @@ modulate_color = Color( 0.415686, 0.415686, 0.415686, 1 )
 
 [sub_resource type="StyleBoxEmpty" id=14]
 
-[sub_resource type="StyleBoxEmpty" id=16]
-
-[sub_resource type="StyleBoxEmpty" id=17]
-
-[sub_resource type="StyleBoxEmpty" id=18]
-
-[sub_resource type="StyleBoxEmpty" id=19]
-
-[sub_resource type="StyleBoxEmpty" id=20]
-
-[node name="World" type="Node2D"]
+[node name="JudoLevel" type="Node2D"]
 position = Vector2( 0, 2 )
 script = ExtResource( 1 )
-_qteFillDuration = 10.0
-_qteGreenZoneCoverPercentage = 0.15
-_qteYellowZoneCoverPercentage = 0.15
 
 [node name="Persons" type="Node2D" parent="."]
-position = Vector2( -1, -32 )
 
 [node name="Player" type="Node2D" parent="Persons"]
-position = Vector2( 235, 200 )
+position = Vector2( 152, 86 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -103,7 +99,7 @@ frames = SubResource( 7 )
 animation = "Idle"
 
 [node name="Opponent" type="Node2D" parent="Persons"]
-position = Vector2( 250, 200 )
+position = Vector2( 167, 86 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -127,7 +123,7 @@ alignment = 1
 
 [node name="HSlider" type="HSlider" parent="QTE/VBoxContainer"]
 margin_top = 12.0
-margin_right = 232.0
+margin_right = 168.0
 margin_bottom = 28.0
 custom_icons/grabber_disabled = ExtResource( 4 )
 custom_icons/grabber_highlight = ExtResource( 4 )
@@ -159,15 +155,3 @@ rect_clip_content = true
 size_flags_vertical = 3
 value = 20.0
 percent_visible = false
-
-[node name="Button" type="Button" parent="QTE"]
-margin_left = -713.0
-margin_top = -710.0
-margin_right = 1252.0
-margin_bottom = 881.0
-size_flags_horizontal = 0
-custom_styles/hover = SubResource( 16 )
-custom_styles/pressed = SubResource( 17 )
-custom_styles/focus = SubResource( 18 )
-custom_styles/disabled = SubResource( 19 )
-custom_styles/normal = SubResource( 20 )

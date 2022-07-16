@@ -7,19 +7,22 @@ using Godot;
 
 namespace Game.Code.Levels
 {
-    internal class Tabletop : Node2D, ILevel
+    public class TabletopLevel : Node2D, ILevel
     {
         private Pawn _bluePawn, _redPawn;
         private Label _blueScoreLabel, _redScoreLabel;
         private Button _rollButton;
         private Tween _animationTween = new Tween();
-
         private Tile[] _tiles;
 
         [Export]
         public float PawnSpeed { get; set; } = 50f;
 
+        [Export]
+        public string[] MinigameNames { get; set; } = { "JudoLevel" };
+
         public Node2D World => this;
+        public bool NeedsToUpdatePawns { get; set; } = false;
 
         public override void _Ready()
         {
@@ -52,6 +55,14 @@ namespace Game.Code.Levels
             _animationTween.Connect("tween_all_completed", this, nameof(OnAnimationTweenCompleted));
         }
 
+        public override void _PhysicsProcess(float delta)
+        {
+            if (NeedsToUpdatePawns)
+            {
+                UpdatePawns();
+            }
+        }
+
         public void OnLevelLoad()
         {
         }
@@ -62,8 +73,15 @@ namespace Game.Code.Levels
 
         public void UpdatePawns()
         {
+            NeedsToUpdatePawns = false;
+
             uint blueScore = GameManager.Instance.BluePlayerScore;
             uint redScore = GameManager.Instance.RedPlayerScore;
+
+            if (_rollButton == null)
+            {
+                return;
+            }
 
             _rollButton.Visible = false;
             _blueScoreLabel.Text = blueScore.ToString();
@@ -91,21 +109,9 @@ namespace Game.Code.Levels
 
         private void OnRollButtonPressed()
         {
-            // TODO: Logic here
-            {
-                uint score = GD.Randi() % 6 + 1;
+            uint levelIndex = GD.Randi() % (uint)MinigameNames.Length;
 
-                if (GD.Randi() % 2 == 0)
-                {
-                    GameManager.Instance.BluePlayerScore += score;
-                }
-                else
-                {
-                    GameManager.Instance.RedPlayerScore += score;
-                }
-            }
-
-            UpdatePawns();
+            SceneManager.Instance.LoadLevel(MinigameNames[levelIndex]);
         }
     }
 }

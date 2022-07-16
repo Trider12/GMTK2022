@@ -1,73 +1,80 @@
 using System.Diagnostics;
 
-using Godot;
 using Game.Code.Interfaces;
+using Game.Code.Managers;
 
+using Godot;
 using Godot.Collections;
 
 public class JudoLevel : Node2D, ILevel
 {
-    [Signal] public delegate void OnTimedOut();
-    [Signal] public delegate void OnGoodResult();
-    [Signal] public delegate void OnBadResult();
+    private float _greenZoneStartValue;
+    private float _greenZoneEndValue;
 
-    public Node2D World => _world;
-    private Node2D _world;
+    [Export]
+    private float _qteAcceptableCoverage = 0.75f;
 
-    private float _greenZoneStartValue; // 0 - 1
-    private float _greenZoneEndValue; // 0 - 1
-    // private float _qteGrabberNormWidth;
+    [Export]
+    private float _qteFillDuration = 1.0f; // seconds
 
-    [Export] private float _qteAcceptableCoverage = 0.75f;
+    [Export]
+    private float _qteGreenZoneCoverPercentage = 0.05f; // 0 - 1
 
-    [Export] private float _qteFillDuration = 3.0f; // seconds
-    [Export] private float _qteGreenZoneCoverPercentage = 0.05f;
-    [Export] private float _qteYellowZoneCoverPercentage = 0.05f;
+    [Export]
+    private float _qteYellowZoneCoverPercentage = 0.05f; // 0 - 1
 
     private AnimatedSprite _playerCharacter;
     private AnimatedSprite _opponentCharacter;
-
     private HSlider _qteBar;
     private ColorRect _qteGreenZone;
     private ColorRect _qteYellowZone;
-    private Button _qteButton;
     private Tween _qteFillTween;
     private bool _qteCurrentTweenIsLTR = true;
+    private bool _playerHasWon = false;
+
+    public Node2D World => this;
 
     public override void _Ready()
     {
-        base._Ready();
-
-        _world = GetNode<Node2D>("World");
-
         _playerCharacter = GetNode<AnimatedSprite>("Persons/Player/AnimatedSprite");
         _opponentCharacter = GetNode<AnimatedSprite>("Persons/Opponent/AnimatedSprite");
 
         _qteBar = GetNode<HSlider>("QTE/VBoxContainer/HSlider");
         _qteGreenZone = GetNode<ColorRect>("QTE/VBoxContainer/HSlider/GreenZone");
         _qteYellowZone = GetNode<ColorRect>("QTE/VBoxContainer/HSlider/YellowZone");
-        _qteButton = GetNode<Button>("QTE/Button");
 
-        // _qteGrabberNormWidth = (float)_qteBarGrabberWidthInPixels / _qteBar.RectSize.x;
-
-        ResetUiState();
+        Reset();
 
         RandomizeGreenZonePosition();
         ConfigureZoneWidgets();
 
-        _qteButton.Connect("pressed", this, nameof(OnQteButtonPressed));
-
         _qteFillTween = new Tween();
         _qteFillTween.Connect("tween_completed", this, nameof(SwapQteBarTweenDirection));
         _qteFillTween.Connect("tween_step", this, nameof(OnBarTweenStep));
-
         AddChild(_qteFillTween);
 
         _qteCurrentTweenIsLTR = false;
-        SwapQteBarTweenDirection(_qteBar, string.Empty);
+        SwapQteBarTweenDirection(_qteBar);
     }
 
-    private void SwapQteBarTweenDirection(Object obj, string path) // path is required for "tween_completed" signal
+    public void OnLevelLoad()
+    {
+    }
+
+    public void OnLevelUnload()
+    {
+        QueueFree();
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        if (Input.IsActionPressed("fire"))
+        {
+            OnQteButtonPressed();
+        }
+    }
+
+    private void SwapQteBarTweenDirection(Object obj, string path = null)
     {
         if (_qteCurrentTweenIsLTR)
         {
@@ -89,14 +96,14 @@ public class JudoLevel : Node2D, ILevel
     {
         return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
     }
-    
+
     private void OnBarTweenStep(Object obj, string path, float elapsed, float value)
     {
         float newPosX = Remap(value, 0.0f, 100.0f, 0.0f, _qteBar.RectSize.x);
         _qteYellowZone.RectPosition = new Vector2(newPosX, 0.0f);
     }
 
-    private void ResetUiState()
+    private void Reset()
     {
         _qteBar.Value = 0;
 
@@ -157,23 +164,22 @@ public class JudoLevel : Node2D, ILevel
         return coverageOfYellow >= _qteAcceptableCoverage;
     }
 
-    public void OnLevelLoad()
-    {
-    }
-
-    public void OnLevelUnload()
-    {
-        QueueFree();
-    }
-
     private void OnQteButtonPressed()
     {
-        float currentValue = (float) _qteBar.Value;
+        float currentValue = (float)_qteBar.Value;
 
         if (IsValueInGreenZone(currentValue))
-            OnQteGoodUserResult();
+        {
+            _playerHasWon = true;
+            PlayThrowAnimation(_playerCharacter, _opponentCharacter, 1.0f);
+        }
         else
-            OnQteBadUserResult();
+        {
+            _playerHasWon = false;
+            PlayThrowAnimation(_opponentCharacter, _playerCharacter, -1.0f);
+        }
+
+        _qteFillTween.Stop(_qteBar);
     }
 
     private void PlayThrowAnimation(AnimatedSprite thrower, AnimatedSprite throwee, float flightDirection)
@@ -182,6 +188,11 @@ public class JudoLevel : Node2D, ILevel
         thrower.Frame = 0;
 
         thrower.Connect("animation_finished", this, nameof(PlayThrowAnimation_AfterAnimationFinished), new Array { throwee, flightDirection });
+    }
+
+    private void OnThrowTweenCompleted()
+    {
+        SceneManager.Instance.LoadDiceLevel(_playerHasWon);
     }
 
     private void PlayThrowAnimation_AfterAnimationFinished(AnimatedSprite throwee, float flightDirection)
@@ -193,25 +204,8 @@ public class JudoLevel : Node2D, ILevel
         Tween throwTween = new Tween();
         AddChild(throwTween);
 
+        throwTween.Connect("tween_all_completed", this, nameof(OnThrowTweenCompleted));
         throwTween.InterpolateProperty(throwee, "position", throwee.Position, throwee.Position + new Vector2(100 * flightDirection, 0), 0.5f, Tween.TransitionType.Linear);
         throwTween.Start();
-    }
-
-    private void OnQteBadUserResult()
-    {
-        EmitSignal(nameof(OnBadResult));
-
-        _qteFillTween.Stop(_qteBar);
-
-        PlayThrowAnimation(_opponentCharacter, _playerCharacter, -1.0f);
-    }
-
-    private void OnQteGoodUserResult()
-    {
-        EmitSignal(nameof(OnGoodResult));
-
-        _qteFillTween.Stop(_qteBar);
-
-        PlayThrowAnimation(_playerCharacter, _opponentCharacter, 1.0f);
     }
 }

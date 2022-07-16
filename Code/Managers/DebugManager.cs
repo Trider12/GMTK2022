@@ -77,7 +77,7 @@ namespace Game.Code.Managers
 
                 if (command == "updatepawns")
                 {
-                    (SceneManager.Instance.CurrentLevel as Tabletop)?.UpdatePawns();
+                    (SceneManager.Instance.CurrentLevel as TabletopLevel)?.UpdatePawns();
                 }
             }
             if (splittedText.Length > 1)

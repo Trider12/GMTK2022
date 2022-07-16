@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 using Game.Code.Helpers;
 using Game.Code.Interfaces;
+using Game.Code.Levels;
 using Game.Code.UI;
 
 using Godot;
@@ -13,6 +14,7 @@ namespace Game.Code.Managers
     {
         private MainMenu _mainMenu;
         private SceneTree _tree;
+        private TabletopLevel _tabletopLevel = Levels["TabletopLevel"].Instance<TabletopLevel>();
 
         private SceneManager()
         {
@@ -23,10 +25,36 @@ namespace Game.Code.Managers
         [Signal]
         public delegate void OnLevelChange();
 
-        public static SceneManager Instance { get; } = new SceneManager();
         public static Dictionary<string, PackedScene> Levels { get; } = PrefabHelper.LoadPrefabsDictionary("res://Scenes/Levels", null, true);
+        public static SceneManager Instance { get; } = new SceneManager();
 
         public ILevel CurrentLevel { get; private set; } = null;
+
+        public void LoadMainMenu()
+        {
+            _tree.Root.CallDeferred("add_child", _mainMenu);
+
+            if (CurrentLevel != null)
+            {
+                _tree.Root.RemoveChild(CurrentLevel as Node);
+                CurrentLevel.OnLevelUnload();
+                CurrentLevel = null;
+            }
+        }
+
+        public void LoadTabletopScene()
+        {
+            _tabletopLevel.NeedsToUpdatePawns = true;
+            LoadLevel(_tabletopLevel);
+        }
+
+        public void LoadDiceLevel(bool playerHasWon)
+        {
+            var level = Levels["DiceLevel"].InstanceOrNull<DiceLevel>();
+            level.PlayerHasWon = playerHasWon;
+
+            LoadLevel(level);
+        }
 
         public void LoadLevel(string levelName)
         {
@@ -40,17 +68,6 @@ namespace Game.Code.Managers
             }
         }
 
-        public void LoadMainMenu()
-        {
-            _tree.Root.CallDeferred("add_child", _mainMenu);
-
-            if (CurrentLevel != null)
-            {
-                CurrentLevel.OnLevelUnload();
-                CurrentLevel = null;
-            }
-        }
-
         private void LoadLevel(ILevel level)
         {
             EmitSignal(nameof(OnLevelChange));
@@ -61,6 +78,7 @@ namespace Game.Code.Managers
             }
             else
             {
+                _tree.Root.RemoveChild(CurrentLevel as Node);
                 CurrentLevel.OnLevelUnload();
             }
 

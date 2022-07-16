@@ -25,7 +25,10 @@ namespace Game.Code.Managers
 
         public void LoadGame()
         {
-            SceneManager.Instance.LoadLevel("Tabletop");
+            BluePlayerScore = 1;
+            RedPlayerScore = 1;
+
+            SceneManager.Instance.LoadTabletopScene();
         }
     }
 }
