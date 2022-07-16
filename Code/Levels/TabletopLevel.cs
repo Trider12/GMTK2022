@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 
 using Game.Code.Interfaces;
 using Game.Code.Managers;
@@ -16,7 +17,7 @@ namespace Game.Code.Levels
         private Tile[] _tiles;
 
         [Export]
-        public float PawnSpeed { get; set; } = 50f;
+        public float PawnSpeed { get; set; } = 100f;
 
         [Export]
         public string[] MinigameNames { get; set; } = { "JudoLevel" };
@@ -31,21 +32,21 @@ namespace Game.Code.Levels
             _redScoreLabel = GetNode<Label>("CanvasLayer/RedScoreLabel");
             _redScoreLabel.Text = GameManager.Instance.RedPlayerScore.ToString();
 
+            var curve = GetNode<Path2D>("Path2D").Curve;
             _bluePawn = GetNode<Pawn>("Path2D/BluePawn");
             _bluePawn.UnitOffset = 0f;
             _redPawn = GetNode<Pawn>("Path2D/RedPawn");
             _redPawn.UnitOffset = 0f;
 
             _tiles = GetNode<Node2D>("Tiles").GetChildren().OfType<Tile>().ToArray();
-            var prevTile = _tiles[0];
+
+            Debug.Assert(_tiles.Length == curve.GetPointCount());
 
             for (int i = 0; i < _tiles.Length; i++)
             {
                 var tile = _tiles[i];
                 tile.Label.Text = (i + 1).ToString();
-                tile.Offset = prevTile.Offset + tile.Position.DistanceTo(prevTile.Position);
-
-                prevTile = tile;
+                tile.Offset = curve.GetClosestOffset(curve.GetPointPosition(i));
             }
 
             _rollButton = GetNode<Button>("CanvasLayer/RollButton");
@@ -75,13 +76,13 @@ namespace Game.Code.Levels
         {
             NeedsToUpdatePawns = false;
 
-            uint blueScore = GameManager.Instance.BluePlayerScore;
-            uint redScore = GameManager.Instance.RedPlayerScore;
-
             if (_rollButton == null)
             {
                 return;
             }
+
+            uint blueScore = GameManager.Instance.BluePlayerScore;
+            uint redScore = GameManager.Instance.RedPlayerScore;
 
             _rollButton.Visible = false;
             _blueScoreLabel.Text = blueScore.ToString();
