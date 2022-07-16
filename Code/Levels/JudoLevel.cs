@@ -12,22 +12,15 @@ public class JudoLevel : Node2D, ILevel
     private float _greenZoneEndValue;
 
     [Export]
-    private float _qteAcceptableCoverage = 0.75f;
-
-    [Export]
     private float _qteFillDuration = 1.0f; // seconds
 
     [Export]
     private float _qteGreenZoneCoverPercentage = 0.05f; // 0 - 1
 
-    [Export]
-    private float _qteYellowZoneCoverPercentage = 0.05f; // 0 - 1
-
     private AnimatedSprite _playerCharacter;
     private AnimatedSprite _opponentCharacter;
     private HSlider _qteBar;
     private ColorRect _qteGreenZone;
-    private ColorRect _qteYellowZone;
     private Tween _qteFillTween;
     private bool _qteCurrentTweenIsLTR = true;
     private bool _playerHasWon = false;
@@ -41,7 +34,6 @@ public class JudoLevel : Node2D, ILevel
 
         _qteBar = GetNode<HSlider>("QTE/VBoxContainer/HSlider");
         _qteGreenZone = GetNode<ColorRect>("QTE/VBoxContainer/HSlider/GreenZone");
-        _qteYellowZone = GetNode<ColorRect>("QTE/VBoxContainer/HSlider/YellowZone");
 
         Reset();
 
@@ -50,7 +42,6 @@ public class JudoLevel : Node2D, ILevel
 
         _qteFillTween = new Tween();
         _qteFillTween.Connect("tween_completed", this, nameof(SwapQteBarTweenDirection));
-        _qteFillTween.Connect("tween_step", this, nameof(OnBarTweenStep));
         AddChild(_qteFillTween);
 
         _qteCurrentTweenIsLTR = false;
@@ -97,12 +88,6 @@ public class JudoLevel : Node2D, ILevel
         return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
     }
 
-    private void OnBarTweenStep(Object obj, string path, float elapsed, float value)
-    {
-        float newPosX = Remap(value, 0.0f, 100.0f, 0.0f, _qteBar.RectSize.x);
-        _qteYellowZone.RectPosition = new Vector2(newPosX, 0.0f);
-    }
-
     private void Reset()
     {
         _qteBar.Value = 0;
@@ -136,32 +121,12 @@ public class JudoLevel : Node2D, ILevel
             _qteBar.RectSize.x * _greenZoneStartValue,
             0
         );
-
-        _qteYellowZone.RectSize = new Vector2(
-            _qteBar.RectSize.x * _qteYellowZoneCoverPercentage,
-            _qteBar.RectSize.y
-        );
-
-        _qteYellowZone.RectPosition = new Vector2(0, 0);
     }
 
     private bool IsValueInGreenZone(float value)
     {
         float valueNorm = value / 100.0f;
-        float minX = valueNorm;
-        float maxX = valueNorm + _qteYellowZoneCoverPercentage;
-
-        if (maxX < _greenZoneStartValue || minX > _greenZoneEndValue)
-        {
-            GD.Print("IsValueInGreenZone(): value is completely outsize");
-            return false;
-        }
-
-        float globalCoverage = Mathf.Min(maxX, _greenZoneEndValue) - Mathf.Max(minX, _greenZoneStartValue);
-        float coverageOfYellow = Mathf.Clamp(globalCoverage / _qteYellowZoneCoverPercentage, 0.0f, 1.0f);
-        GD.Print("IsValueInGreenZone(): coverage: " + coverageOfYellow + "%");
-
-        return coverageOfYellow >= _qteAcceptableCoverage;
+        return valueNorm >= _greenZoneStartValue && valueNorm <= _greenZoneEndValue;
     }
 
     private void OnQteButtonPressed()

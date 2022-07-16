@@ -6,54 +6,44 @@
 [ext_resource path="res://Assets/Textures/EmptyTexture.png" type="Texture" id=4]
 
 [sub_resource type="AtlasTexture" id=3]
-flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 1536, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=4]
-flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 1600, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=5]
-flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 1664, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=6]
-flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 1728, 0, 64, 64 )
 
-[sub_resource type="AtlasTexture" id=1]
-flags = 4
-atlas = ExtResource( 2 )
-region = Rect2( 0, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=2]
-flags = 4
-atlas = ExtResource( 2 )
-region = Rect2( 64, 0, 64, 64 )
-
 [sub_resource type="AtlasTexture" id=8]
-flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 3264, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=9]
-flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 3328, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=10]
-flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 3392, 0, 64, 64 )
 
 [sub_resource type="AtlasTexture" id=11]
-flags = 4
 atlas = ExtResource( 2 )
 region = Rect2( 3456, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 64, 64 )
 
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
@@ -62,14 +52,14 @@ animations = [ {
 "name": "Throw",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 1 ), SubResource( 2 ) ],
-"loop": true,
-"name": "Idle",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
 "loop": false,
 "name": "InFlight",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "Idle",
 "speed": 5.0
 } ]
 
@@ -125,7 +115,7 @@ alignment = 1
 margin_top = 12.0
 margin_right = 168.0
 margin_bottom = 28.0
-custom_icons/grabber_disabled = ExtResource( 4 )
+custom_icons/grabber_disabled = ExtResource( 3 )
 custom_icons/grabber_highlight = ExtResource( 4 )
 custom_icons/grabber = ExtResource( 4 )
 custom_styles/slider = SubResource( 15 )
@@ -140,18 +130,3 @@ scrollable = false
 margin_right = 40.0
 margin_bottom = 20.0
 color = Color( 0.54902, 1, 0.00392157, 0.721569 )
-
-[node name="YellowZone" type="ColorRect" parent="QTE/VBoxContainer/HSlider"]
-margin_right = 40.0
-margin_bottom = 20.0
-color = Color( 1, 0.960784, 0.0235294, 1 )
-
-[node name="ProgressBar" type="ProgressBar" parent="QTE/VBoxContainer"]
-visible = false
-margin_top = 20.0
-margin_right = 232.0
-margin_bottom = 22.0
-rect_clip_content = true
-size_flags_vertical = 3
-value = 20.0
-percent_visible = false
