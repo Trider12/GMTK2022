@@ -16,6 +16,7 @@ public class JudoLevel : Node2D, ILevel
 
     private float _greenZoneStartValue; // 0 - 1
     private float _greenZoneEndValue; // 0 - 1
+    // private float _qteGrabberNormWidth;
 
     [Export] private float _qteAcceptableCoverage = 0.75f;
 
@@ -28,6 +29,7 @@ public class JudoLevel : Node2D, ILevel
 
     private HSlider _qteBar;
     private ColorRect _qteGreenZone;
+    private ColorRect _qteYellowZone;
     private Button _qteButton;
     private Tween _qteFillTween;
     private bool _qteCurrentTweenIsLTR = true;
@@ -43,6 +45,7 @@ public class JudoLevel : Node2D, ILevel
 
         _qteBar = GetNode<HSlider>("QTE/VBoxContainer/HSlider");
         _qteGreenZone = GetNode<ColorRect>("QTE/VBoxContainer/HSlider/GreenZone");
+        _qteYellowZone = GetNode<ColorRect>("QTE/VBoxContainer/HSlider/YellowZone");
         _qteButton = GetNode<Button>("QTE/Button");
 
         // _qteGrabberNormWidth = (float)_qteBarGrabberWidthInPixels / _qteBar.RectSize.x;
@@ -56,6 +59,7 @@ public class JudoLevel : Node2D, ILevel
 
         _qteFillTween = new Tween();
         _qteFillTween.Connect("tween_completed", this, nameof(SwapQteBarTweenDirection));
+        _qteFillTween.Connect("tween_step", this, nameof(OnBarTweenStep));
 
         AddChild(_qteFillTween);
 
@@ -84,6 +88,12 @@ public class JudoLevel : Node2D, ILevel
     private float Remap(float value, float from1, float to1, float from2, float to2)
     {
         return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+    }
+    
+    private void OnBarTweenStep(Object obj, string path, float elapsed, float value)
+    {
+        float newPosX = Remap(value, 0.0f, 100.0f, 0.0f, _qteBar.RectSize.x);
+        _qteYellowZone.RectPosition = new Vector2(newPosX, 0.0f);
     }
 
     private void ResetUiState()
@@ -119,12 +129,32 @@ public class JudoLevel : Node2D, ILevel
             _qteBar.RectSize.x * _greenZoneStartValue,
             0
         );
+
+        _qteYellowZone.RectSize = new Vector2(
+            _qteBar.RectSize.x * _qteYellowZoneCoverPercentage,
+            _qteBar.RectSize.y
+        );
+
+        _qteYellowZone.RectPosition = new Vector2(0, 0);
     }
 
     private bool IsValueInGreenZone(float value)
     {
         float valueNorm = value / 100.0f;
-        return valueNorm >= _greenZoneStartValue && valueNorm <= _greenZoneEndValue;
+        float minX = valueNorm;
+        float maxX = valueNorm + _qteYellowZoneCoverPercentage;
+
+        if (maxX < _greenZoneStartValue || minX > _greenZoneEndValue)
+        {
+            GD.Print("IsValueInGreenZone(): value is completely outsize");
+            return false;
+        }
+
+        float globalCoverage = Mathf.Min(maxX, _greenZoneEndValue) - Mathf.Max(minX, _greenZoneStartValue);
+        float coverageOfYellow = Mathf.Clamp(globalCoverage / _qteYellowZoneCoverPercentage, 0.0f, 1.0f);
+        GD.Print("IsValueInGreenZone(): coverage: " + coverageOfYellow + "%");
+
+        return coverageOfYellow >= _qteAcceptableCoverage;
     }
 
     public void OnLevelLoad()

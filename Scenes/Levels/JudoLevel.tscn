@@ -21,14 +21,6 @@ region = Rect2( 1664, 0, 64, 64 )
 atlas = ExtResource( 2 )
 region = Rect2( 1728, 0, 64, 64 )
 
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 0, 64, 64 )
-
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 2 )
-region = Rect2( 64, 0, 64, 64 )
-
 [sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 2 )
 region = Rect2( 3264, 0, 64, 64 )
@@ -45,6 +37,14 @@ region = Rect2( 3392, 0, 64, 64 )
 atlas = ExtResource( 2 )
 region = Rect2( 3456, 0, 64, 64 )
 
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 64, 64 )
+
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
 "frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ],
@@ -52,14 +52,14 @@ animations = [ {
 "name": "Throw",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 1 ), SubResource( 2 ) ],
-"loop": true,
-"name": "Idle",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ) ],
 "loop": false,
 "name": "InFlight",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "Idle",
 "speed": 5.0
 } ]
 
@@ -85,6 +85,9 @@ modulate_color = Color( 0.415686, 0.415686, 0.415686, 1 )
 [node name="World" type="Node2D"]
 position = Vector2( 0, 2 )
 script = ExtResource( 1 )
+_qteFillDuration = 10.0
+_qteGreenZoneCoverPercentage = 0.15
+_qteYellowZoneCoverPercentage = 0.15
 
 [node name="Persons" type="Node2D" parent="."]
 position = Vector2( -1, -32 )
@@ -124,9 +127,9 @@ alignment = 1
 
 [node name="HSlider" type="HSlider" parent="QTE/VBoxContainer"]
 margin_top = 12.0
-margin_right = 168.0
+margin_right = 232.0
 margin_bottom = 28.0
-custom_icons/grabber_disabled = ExtResource( 3 )
+custom_icons/grabber_disabled = ExtResource( 4 )
 custom_icons/grabber_highlight = ExtResource( 4 )
 custom_icons/grabber = ExtResource( 4 )
 custom_styles/slider = SubResource( 15 )
@@ -141,6 +144,11 @@ scrollable = false
 margin_right = 40.0
 margin_bottom = 20.0
 color = Color( 0.54902, 1, 0.00392157, 0.721569 )
+
+[node name="YellowZone" type="ColorRect" parent="QTE/VBoxContainer/HSlider"]
+margin_right = 40.0
+margin_bottom = 20.0
+color = Color( 1, 0.960784, 0.0235294, 1 )
 
 [node name="ProgressBar" type="ProgressBar" parent="QTE/VBoxContainer"]
 visible = false
