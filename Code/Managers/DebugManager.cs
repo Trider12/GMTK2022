@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
 
+using Game.Code.Levels;
+
 using Godot;
 
 namespace Game.Code.Managers
 {
     public class DebugManager : CanvasLayer
     {
-        private const int ArgumentsToConsoleMinCount = 2;
-
         private LineEdit _consoleInput;
         private Control _debugOverlay;
         private OptionButton _levelsOption;
@@ -71,19 +71,39 @@ namespace Game.Code.Managers
 
             string[] splittedText = text.Split(" ");
 
-            if (splittedText.Length >= ArgumentsToConsoleMinCount)
+            if (splittedText.Length > 0)
             {
-                switch (splittedText[0])
-                {
-                    case "level":
-                    {
-                        string levelName = splittedText[1];
-                        SceneManager.Instance.LoadLevel(levelName);
+                string command = splittedText[0];
 
-                        break;
+                if (command == "updatepawns")
+                {
+                    (SceneManager.Instance.CurrentLevel as Tabletop)?.UpdatePawns();
+                }
+            }
+            if (splittedText.Length > 1)
+            {
+                string command = splittedText[0];
+
+                if (command == "level")
+                {
+                    string levelName = splittedText[1];
+                    SceneManager.Instance.LoadLevel(levelName);
+                }
+
+                if (command == "bluescore")
+                {
+                    if (uint.TryParse(splittedText[1], out uint score))
+                    {
+                        GameManager.Instance.BluePlayerScore = score;
                     }
-                    default:
-                        break;
+                }
+
+                if (command == "redscore")
+                {
+                    if (uint.TryParse(splittedText[1], out uint score))
+                    {
+                        GameManager.Instance.RedPlayerScore = score;
+                    }
                 }
             }
         }

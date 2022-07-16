@@ -1,30 +1,31 @@
-﻿using Godot;
+﻿using System.Diagnostics;
+
+using Godot;
 
 namespace Game.Code.Managers
 {
     public class GameManager : Node
     {
-        private GameManager()
+        public GameManager()
         {
+            Debug.Assert(Instance == null);
+            Instance = this;
         }
 
-        public static GameManager Instance { get; } = new GameManager();
+        public static GameManager Instance { get; private set; }
 
         public Player Player { get; private set; } = GD.Load<PackedScene>("res://Scenes/Player.tscn").Instance<Player>();
+        public uint BluePlayerScore { get; set; } = 1;
+        public uint RedPlayerScore { get; set; } = 1;
 
-        public float BluePlayerScore { get; private set; } = 0;
-        public float RedPlayerScore { get; private set; } = 0;
-        
         public override void _Ready()
         {
-            base._Ready();
-
             GD.Randomize();
         }
 
         public void LoadGame()
         {
-            SceneManager.Instance.LoadLevel("JudoLevel");
+            SceneManager.Instance.LoadLevel("Tabletop");
         }
     }
 }

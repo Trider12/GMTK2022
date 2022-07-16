@@ -16,14 +16,14 @@ config/icon="res://Assets/Icons/icon.png"
 
 [autoload]
 
+GameManager="*res://Code/Managers/GameManager.cs"
 UiManager="*res://Scenes/UI/UIManager.tscn"
 DebugManager="*res://Scenes/UI/DebugManager.tscn"
-GameManager="*res://Code/Managers/GameManager.cs"
 
 [display]
 
-window/size/width=480
-window/size/height=270
+window/size/width=320
+window/size/height=180
 window/size/resizable=false
 window/dpi/allow_hidpi=true
 window/stretch/mode="2d"
