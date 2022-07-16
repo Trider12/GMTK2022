@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/WhiteSquare.png-bf6530baf2102ee40d867f764b3bf6f2.stex"
+path="res://.import/Ring.png-784bd496eb76e593ec8f3358f2180e17.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/WhiteSquare.png"
-dest_files=[ "res://.import/WhiteSquare.png-bf6530baf2102ee40d867f764b3bf6f2.stex" ]
+source_file="res://Assets/Textures/Judo/Ring.png"
+dest_files=[ "res://.import/Ring.png-784bd496eb76e593ec8f3358f2180e17.stex" ]
 
 [params]
 

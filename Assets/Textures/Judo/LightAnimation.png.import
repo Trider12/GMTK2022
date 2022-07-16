@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/EmptyTexture.png-c087b07eec8cc3a65a02b0120b4f7efd.stex"
+path="res://.import/LightAnimation.png-e66f51207285c5d652c9e706bc0df4f4.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Textures/EmptyTexture.png"
-dest_files=[ "res://.import/EmptyTexture.png-c087b07eec8cc3a65a02b0120b4f7efd.stex" ]
+source_file="res://Assets/Textures/Judo/LightAnimation.png"
+dest_files=[ "res://.import/LightAnimation.png-e66f51207285c5d652c9e706bc0df4f4.stex" ]
 
 [params]
 

@@ -12,6 +12,12 @@ public class JudoLevel : Node2D, ILevel
     private float _greenZoneEndValue;
 
     [Export]
+    private float _playersBeginWalkDuration = 1.0f; // seconds
+
+    [Export]
+    private float _playersShakingDuration = 0.1f; // seconds
+
+    [Export]
     private float _qteFillDuration = 1.0f; // seconds
 
     [Export]
@@ -25,54 +31,56 @@ public class JudoLevel : Node2D, ILevel
 
     private AnimatedSprite _playerCharacter;
     private AnimatedSprite _opponentCharacter;
+    private Node2D _playerWalkTarget;
+    private Node2D _opponentWalkTarget;
+
     private HSlider _qteBar;
     private ColorRect _qteGreenZone;
     private Label _qteHurryUpLabel;
     private Label _qteLabel;
+
+
+    private Tween _playersInitialWalkAnimationTween;
+    private Tween _playersShakingAnimationTween;
     private Tween _qteFillTween;
+
     private Timer _qteHurryUpTimer;
     private Timer _qteLoseTimer;
     private bool _qteCurrentTweenIsLTR = true;
     private bool _playerHasWon = false;
     private bool _gameIsFinished = false;
+    private Vector2 _playerStartPosition;
+    private Vector2 _opponentStartPosition;
 
     public Node2D World => this;
 
     public override void _Ready()
     {
-        _playerCharacter = GetNode<AnimatedSprite>("Persons/Player/AnimatedSprite");
-        _opponentCharacter = GetNode<AnimatedSprite>("Persons/Opponent/AnimatedSprite");
+        _playerCharacter = GetNode<AnimatedSprite>("Characters/Player/AnimatedSprite");
+        _opponentCharacter = GetNode<AnimatedSprite>("Characters/Opponent/AnimatedSprite");
+        _playerWalkTarget = GetNode<Node2D>("Characters/BeginGameTargetPosition_Player");
+        _opponentWalkTarget = GetNode<Node2D>("Characters/BeginGameTargetPosition_Opponent");
+        
+        _playersInitialWalkAnimationTween = new Tween();
+        _playersInitialWalkAnimationTween.InterpolateProperty(_playerCharacter, "global_position", _playerCharacter.GlobalPosition, _playerWalkTarget.GlobalPosition, _playersBeginWalkDuration);
+        _playersInitialWalkAnimationTween.InterpolateProperty(_opponentCharacter, "global_position", _opponentCharacter.GlobalPosition, _opponentWalkTarget.GlobalPosition, _playersBeginWalkDuration);
+        AddChild(_playersInitialWalkAnimationTween);
+
+        _playersShakingAnimationTween = new Tween();
+        AddChild(_playersShakingAnimationTween);
 
         _qteBar = GetNode<HSlider>("QTE/HSlider");
         _qteGreenZone = GetNode<ColorRect>("QTE/HSlider/GreenZone");
         _qteHurryUpLabel = GetNode<Label>("QTE/HSlider/HurryUpLabel");
         _qteLabel = GetNode<Label>("QTE/StatusLabel");
 
-        _qteHurryUpTimer = new Timer();
-        AddChild(_qteHurryUpTimer);
-        _qteHurryUpTimer.OneShot = true;
-        _qteHurryUpTimer.Start(_qteHurryUpTime);
-        _qteHurryUpTimer.Connect("timeout", this, nameof(OnHurryUpTimerTimeout));
-
-        _qteLoseTimer = new Timer();
-        AddChild(_qteLoseTimer);
-        _qteLoseTimer.OneShot = true;
-        _qteLoseTimer.Start(_qteHurryUpTime + _qteTimeToLoseAfterHurryUp);
-        _qteLoseTimer.Connect("timeout", this, nameof(OnLoseTimerTimeout));
-
-        Reset();
-
-        RandomizeGreenZonePosition();
-        ConfigureZoneWidgets();
-
         _qteFillTween = new Tween();
         _qteFillTween.Connect("tween_completed", this, nameof(SwapQteBarTweenDirection));
         AddChild(_qteFillTween);
 
-        _qteCurrentTweenIsLTR = false;
-        SwapQteBarTweenDirection(_qteBar);
+        Reset();
 
-        SetStatusLabelText("Tap to throw");
+        BeginGame();
     }
 
     public void OnLevelLoad()
@@ -117,15 +125,14 @@ public class JudoLevel : Node2D, ILevel
 
     private void Reset()
     {
-        _qteBar.Value = 0;
-
-        _playerCharacter.Animation = "Idle";
-        _playerCharacter.Playing = true;
-        _opponentCharacter.Animation = "Idle";
-        _opponentCharacter.Playing = true;
+        SetCharacterAnimation(_playerCharacter, "Idle");
+        SetCharacterAnimation(_opponentCharacter, "Idle");
 
         _qteLabel.Text = "";
         _qteHurryUpLabel.Visible = false;
+
+        _qteGreenZone.Visible = false;
+        _qteBar.Value = 0;
     }
 
     private void RandomizeGreenZonePosition()
@@ -168,17 +175,14 @@ public class JudoLevel : Node2D, ILevel
 
     private void PlayThrowAnimation(AnimatedSprite thrower, AnimatedSprite throwee, float flightDirection)
     {
-        thrower.Animation = "Throw";
-        thrower.Frame = 0;
+        SetCharacterAnimation(thrower, "Throw");
 
         thrower.Connect("animation_finished", this, nameof(OnAfterThrowerPlayedAnimation), new Array { throwee, flightDirection });
     }
 
     private void OnAfterThrowerPlayedAnimation(AnimatedSprite throwee, float flightDirection)
     {
-        throwee.Animation = "InFlight";
-        throwee.Frame = 0;
-        throwee.Playing = true;
+        SetCharacterAnimation(throwee, "InFlight");
 
         Tween throwTween = new Tween();
         AddChild(throwTween);
@@ -199,14 +203,68 @@ public class JudoLevel : Node2D, ILevel
         _qteLabel.Visible = true;
     }
 
+    private void BeginGame()
+    {
+        SetCharacterAnimation(_playerCharacter, "Walk");
+        SetCharacterAnimation(_opponentCharacter, "Walk");
+
+        _playersInitialWalkAnimationTween.Start();
+        _playersInitialWalkAnimationTween.Connect("tween_all_completed", this, nameof(OnPlayersBeginWalkTweenCompleted));
+    }
+
+    private void OnPlayersBeginWalkTweenCompleted()
+    {
+        SetCharacterAnimation(_playerCharacter, "Wrestle");
+        SetCharacterAnimation(_opponentCharacter, "Wrestle");
+
+        OnGameBegan();
+    }
+
+    private void OnGameBegan()
+    {
+        _qteGreenZone.Visible = true;
+
+        _qteHurryUpTimer = new Timer();
+        AddChild(_qteHurryUpTimer);
+        _qteHurryUpTimer.OneShot = true;
+        _qteHurryUpTimer.Start(_qteHurryUpTime);
+        _qteHurryUpTimer.Connect("timeout", this, nameof(OnHurryUpTimerTimeout));
+
+        _qteLoseTimer = new Timer();
+        AddChild(_qteLoseTimer);
+        _qteLoseTimer.OneShot = true;
+        _qteLoseTimer.Start(_qteHurryUpTime + _qteTimeToLoseAfterHurryUp);
+        _qteLoseTimer.Connect("timeout", this, nameof(OnLoseTimerTimeout));
+
+        RandomizeGreenZonePosition();
+        ConfigureZoneWidgets();
+
+        _qteCurrentTweenIsLTR = false;
+        SwapQteBarTweenDirection(_qteBar);
+
+        SetStatusLabelText("Tap to throw");
+
+        _playersShakingAnimationTween.Connect("tween_all_completed", this, nameof(RestartShakingPlayersTween));
+        RestartShakingPlayersTween();
+    }
+
+    private void RestartShakingPlayersTween()
+    {
+        Vector2 randomOffset = new Vector2((int)GD.Randi() % 3 - 1, (int)GD.Randi() % 3 - 1);
+        _playersShakingAnimationTween.InterpolateProperty(_playerCharacter, "global_position", _playerCharacter.GlobalPosition, _playerWalkTarget.GlobalPosition + randomOffset, _playersShakingDuration);
+        _playersShakingAnimationTween.InterpolateProperty(_opponentCharacter, "global_position", _opponentCharacter.GlobalPosition, _opponentWalkTarget.GlobalPosition + randomOffset, _playersShakingDuration);
+        _playersShakingAnimationTween.Start();
+    }
+
     private void FinishGame(bool playerWon)
     {
         _gameIsFinished = true;
         _qteHurryUpLabel.Visible = false;
-        _qteFillTween.Stop(_qteBar);
+        _playerHasWon = playerWon;
+        _qteFillTween.StopAll();
+        _playersShakingAnimationTween.StopAll();
         _qteHurryUpTimer.Stop();
         _qteLoseTimer.Stop();
-        _playerHasWon = playerWon;
 
         if (playerWon)
         {
@@ -218,6 +276,13 @@ public class JudoLevel : Node2D, ILevel
             SetStatusLabelText("Really bad!");
             PlayThrowAnimation(_opponentCharacter, _playerCharacter, -1.0f);
         }
+    }
+
+    private void SetCharacterAnimation(AnimatedSprite character, string animName)
+    {
+        character.Animation = animName;
+        character.Frame = 0;
+        character.Playing = true;
     }
 
     private void OnHurryUpTimerTimeout()
