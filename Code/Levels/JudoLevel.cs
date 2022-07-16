@@ -39,7 +39,6 @@ public class JudoLevel : Node2D, ILevel
     private Label _qteHurryUpLabel;
     private Label _qteLabel;
 
-
     private Tween _playersInitialWalkAnimationTween;
     private Tween _playersShakingAnimationTween;
     private Tween _qteFillTween;
@@ -49,8 +48,6 @@ public class JudoLevel : Node2D, ILevel
     private bool _qteCurrentTweenIsLTR = true;
     private bool _playerHasWon = false;
     private bool _gameIsFinished = false;
-    private Vector2 _playerStartPosition;
-    private Vector2 _opponentStartPosition;
 
     public Node2D World => this;
 
@@ -60,7 +57,7 @@ public class JudoLevel : Node2D, ILevel
         _opponentCharacter = GetNode<AnimatedSprite>("Characters/Opponent/AnimatedSprite");
         _playerWalkTarget = GetNode<Node2D>("Characters/BeginGameTargetPosition_Player");
         _opponentWalkTarget = GetNode<Node2D>("Characters/BeginGameTargetPosition_Opponent");
-        
+
         _playersInitialWalkAnimationTween = new Tween();
         _playersInitialWalkAnimationTween.InterpolateProperty(_playerCharacter, "global_position", _playerCharacter.GlobalPosition, _playerWalkTarget.GlobalPosition, _playersBeginWalkDuration);
         _playersInitialWalkAnimationTween.InterpolateProperty(_opponentCharacter, "global_position", _opponentCharacter.GlobalPosition, _opponentWalkTarget.GlobalPosition, _playersBeginWalkDuration);
@@ -85,6 +82,7 @@ public class JudoLevel : Node2D, ILevel
 
     public void OnLevelLoad()
     {
+        SoundManager.Instance.PlayBattleTheme();
     }
 
     public void OnLevelUnload()

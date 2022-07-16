@@ -66,6 +66,7 @@ namespace Game.Code.Levels
 
         public void OnLevelLoad()
         {
+            SoundManager.Instance.PlayMainTheme();
         }
 
         public void OnLevelUnload()

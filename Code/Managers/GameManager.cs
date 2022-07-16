@@ -21,6 +21,7 @@ namespace Game.Code.Managers
         public override void _Ready()
         {
             GD.Randomize();
+            SoundManager.Instance.PlayMainTheme();
         }
 
         public void LoadGame()

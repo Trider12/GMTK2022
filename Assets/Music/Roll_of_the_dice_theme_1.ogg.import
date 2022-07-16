@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Roll_of_the_dice_theme_1.ogg-6da763ecb7ae730b12207b2753bb3b60.oggstr"
+
+[deps]
+
+source_file="res://Assets/Music/Roll_of_the_dice_theme_1.ogg"
+dest_files=[ "res://.import/Roll_of_the_dice_theme_1.ogg-6da763ecb7ae730b12207b2753bb3b60.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

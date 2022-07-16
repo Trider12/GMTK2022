@@ -5,13 +5,13 @@ using Godot;
 
 namespace Game.Code.Helpers
 {
-    public static class PrefabHelper
+    public static class ResourceHelper
     {
         // TODO: rewrite this using Godot collections
 
-        public static Dictionary<string, PackedScene> LoadPrefabsDictionary(string path, string[] namesToExclude = null, bool caseSensitive = true)
+        public static Dictionary<string, T> LoadResourcesDictionary<T>(string path, string[] namesToExclude = null, bool caseSensitive = true) where T : Resource
         {
-            var dict = new Dictionary<string, PackedScene>();
+            var dict = new Dictionary<string, T>();
             var directory = new Directory();
 
             if (directory.Open(path) == Error.Ok)
@@ -20,7 +20,7 @@ namespace Game.Code.Helpers
 
                 for (var filename = directory.GetNext(); !string.IsNullOrEmpty(filename); filename = directory.GetNext())
                 {
-                    if (directory.CurrentIsDir())
+                    if (directory.CurrentIsDir() || filename.EndsWith(".import"))
                     {
                         continue;
                     }
@@ -32,25 +32,25 @@ namespace Game.Code.Helpers
                         continue;
                     }
 
-                    var scenePath = $"{path}/{filename}";
-                    var scene = GD.Load<PackedScene>(scenePath);
+                    var resourcePath = $"{path}/{filename}";
+                    var resource = GD.Load<T>(resourcePath);
 
-                    if (scene == null)
+                    if (resource == null)
                     {
-                        GD.PushError($"Failed to load scene \"{scenePath}\"");
+                        GD.PushError($"Failed to load resource of type {typeof(T).Name} \"{resourcePath}\"");
                         continue;
                     }
 
-                    dict.Add(filenameWOExtension, scene);
+                    dict.Add(filenameWOExtension, resource);
                 }
             }
 
             return dict;
         }
 
-        public static List<PackedScene> LoadPrefabsList(string path)
+        public static IList<T> LoadPrefabsList<T>(string path) where T : Resource
         {
-            var list = new List<PackedScene>();
+            var list = new List<T>();
             var dir = new Directory();
 
             if (dir.Open(path) == Error.Ok)
@@ -64,8 +64,16 @@ namespace Game.Code.Helpers
                         continue;
                     }
 
-                    var scene = GD.Load<PackedScene>($"{path}/{filename}");
-                    list.Add(scene);
+                    var resourcePath = $"{path}/{filename}";
+                    var resource = GD.Load<T>(resourcePath);
+
+                    if (resource == null)
+                    {
+                        GD.PushError($"Failed to load resource of type {typeof(T).Name} \"{resourcePath}\"");
+                        continue;
+                    }
+
+                    list.Add(resource);
                 }
             }
 

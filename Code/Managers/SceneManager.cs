@@ -25,7 +25,7 @@ namespace Game.Code.Managers
         [Signal]
         public delegate void OnLevelChange();
 
-        public static Dictionary<string, PackedScene> Levels { get; } = PrefabHelper.LoadPrefabsDictionary("res://Scenes/Levels", null, true);
+        public static Dictionary<string, PackedScene> Levels { get; } = ResourceHelper.LoadResourcesDictionary<PackedScene>("res://Scenes/Levels", null, true);
         public static SceneManager Instance { get; } = new SceneManager();
 
         public ILevel CurrentLevel { get; private set; } = null;
@@ -40,6 +40,8 @@ namespace Game.Code.Managers
                 CurrentLevel.OnLevelUnload();
                 CurrentLevel = null;
             }
+
+            SoundManager.Instance.PlayMainTheme();
         }
 
         public void LoadTabletopScene()
