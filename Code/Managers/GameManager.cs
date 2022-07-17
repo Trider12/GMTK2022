@@ -14,9 +14,10 @@ namespace Game.Code.Managers
 
         public static GameManager Instance { get; private set; }
 
-        public Player Player { get; private set; } = GD.Load<PackedScene>("res://Scenes/Player.tscn").Instance<Player>();
         public uint BluePlayerScore { get; set; } = 1;
         public uint RedPlayerScore { get; set; } = 1;
+        public uint MaxScore { get; set; } = 1;
+        public float DifficultyPercentage => 1f + (BluePlayerScore - RedPlayerScore) * 1f / MaxScore; // [0 - 2]
 
         public override void _Ready()
         {

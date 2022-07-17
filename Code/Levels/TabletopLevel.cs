@@ -41,13 +41,14 @@ namespace Game.Code.Levels
             _redPawn.UnitOffset = 0f;
 
             _tiles = GetNode<Node2D>("Tiles").GetChildren().OfType<Tile>().ToArray();
+            GameManager.Instance.MaxScore = (uint)_tiles.Length - 1;
 
             Debug.Assert(_tiles.Length == curve.GetPointCount());
 
             for (int i = 0; i < _tiles.Length; i++)
             {
                 var tile = _tiles[i];
-                tile.Label.Text = (i + 1).ToString();
+                tile.Label.Text = i.ToString();
                 tile.Offset = curve.GetClosestOffset(curve.GetPointPosition(i));
             }
 
@@ -117,13 +118,11 @@ namespace Game.Code.Levels
         {
             _postAnimationDurationTimer.Stop(); // this is weird
 
-            uint maxScore = (uint)_tiles.Length;
-            
-            if (GameManager.Instance.BluePlayerScore >= maxScore)
+            if (GameManager.Instance.BluePlayerScore >= GameManager.Instance.MaxScore)
             {
                 OnGameFinished(true);
             }
-            else if (GameManager.Instance.RedPlayerScore >= maxScore)
+            else if (GameManager.Instance.RedPlayerScore >= GameManager.Instance.MaxScore)
             {
                 OnGameFinished(false);
             }

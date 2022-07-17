@@ -1,12 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Assets/Textures/Misc/white.png" type="Texture" id=1]
-[ext_resource path="res://Assets/Shaders/FillOpaquePixels.shader" type="Shader" id=2]
+[ext_resource path="res://Assets/Textures/Tabletop/FigurineBlue.png" type="Texture" id=1]
 [ext_resource path="res://Code/Pawn.cs" type="Script" id=3]
-
-[sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 2 )
-shader_param/u_color = Color( 1, 1, 1, 1 )
 
 [node name="Pawn" type="PathFollow2D"]
 rotate = false
@@ -18,8 +13,5 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 1 )
 position = Vector2( 0, -10 )
 texture = ExtResource( 1 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 10, 20 )
