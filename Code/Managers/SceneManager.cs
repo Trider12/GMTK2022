@@ -95,5 +95,10 @@ namespace Game.Code.Managers
             _tree.Root.CallDeferred("add_child", CurrentLevel);
             CurrentLevel.OnLevelLoad();
         }
+
+        public void ResetTabletop()
+        {
+            _tabletopLevel = Levels["TabletopLevel"].Instance<TabletopLevel>();
+        }
     }
 }

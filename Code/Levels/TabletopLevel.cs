@@ -138,6 +138,7 @@ namespace Game.Code.Levels
             // TODO: Reset this object
 
             SceneManager.Instance.LoadMainMenu();
+            SceneManager.Instance.ResetTabletop();
         }
     }
 }
