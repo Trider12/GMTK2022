@@ -37,10 +37,13 @@ public class JudoLevel : Node2D, ILevel
     private int _startBattleCountdownTime = 3; // seconds
 
     [Export]
-    private int _throwDistance = 70;
+    private float _throwDistance = 50;
 
     [Export]
-    private float _inFlightAnimationDuration = 0.5f; // seconds
+    private float _throwHeight = 20;
+
+    [Export]
+    private float _inFlightAnimationDuration = 1.0f; // seconds
 
     [Export]
     private float _finalMessageDuration = 1.5f;
@@ -50,6 +53,9 @@ public class JudoLevel : Node2D, ILevel
     private Node2D _playerWalkTarget;
     private Node2D _opponentWalkTarget;
     private Node2D _omniLightsParent;
+    private AnimatedSprite _currentThrowee;
+    private Vector2 _currentThroweeStartPosition;
+    private Vector2 _currentThroweeTargetPosition;
 
     private HSlider _qteBar;
     private ColorRect _qteGreenZone;
@@ -364,14 +370,30 @@ public class JudoLevel : Node2D, ILevel
     private void OnAfterThrowerPlayedAnimation(AnimatedSprite throwee, int flightDirection)
     {
         SetCharacterAnimation(throwee, "InFlight");
+        _currentThrowee = throwee;
+        _currentThroweeStartPosition = throwee.Position;
+        _currentThroweeTargetPosition = throwee.Position + new Vector2(_throwDistance * flightDirection, 0);
 
         _inFlightAnimationTween.Connect("tween_all_completed", this, nameof(OnInFlightTweenCompleted));
-        _inFlightAnimationTween.InterpolateProperty(throwee, "position", throwee.Position, throwee.Position + new Vector2(_throwDistance * flightDirection, 0), _inFlightAnimationDuration);
+        _inFlightAnimationTween.InterpolateMethod(this, nameof(ThroweePositionInterpolation), 0.0f, 1.0f, _inFlightAnimationDuration);
         _inFlightAnimationTween.Start();
+    }
+
+    private void ThroweePositionInterpolation(float t)
+    {
+        Debug.Assert(_currentThrowee != null);
+
+        Vector2 lerpedPos = _currentThroweeStartPosition.LinearInterpolate(_currentThroweeTargetPosition, t);
+        lerpedPos.y -= Mathf.Sin(t * Mathf.Pi) * _throwHeight;
+        _currentThrowee.Position = lerpedPos;
     }
 
     private void OnInFlightTweenCompleted()
     {
+        Debug.Assert(_currentThrowee != null);
+
+        SetCharacterAnimation(_currentThrowee, "Landed");
+
         // TODO: Play "Fall" sound
         // TODO: Play "You win/You lose" sound
         // TODO: Play "You win/You lose" music
