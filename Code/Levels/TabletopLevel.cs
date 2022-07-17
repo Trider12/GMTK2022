@@ -16,7 +16,6 @@ namespace Game.Code.Levels
         private Tile[] _tiles;
         private Timer _postAnimationDurationTimer = new Timer();
 
-        private Button _playButton;
         private bool _isReady = false;
 
         [Export]
@@ -35,8 +34,6 @@ namespace Game.Code.Levels
             _redScoreLabel = GetNode<Label>("CanvasLayer/RedScoreLabel");
             _redScoreLabel.Text = GameManager.Instance.RedPlayerScore.ToString();
 
-            // TODO: @Damir, replace path to Play button
-            // _playButton = GetNode<Button>(TODO);
             var curve = GetNode<Path2D>("Path2D").Curve;
             _bluePawn = GetNode<Pawn>("Path2D/BluePawn");
             _bluePawn.UnitOffset = 0f;
@@ -61,8 +58,6 @@ namespace Game.Code.Levels
             AddChild(_postAnimationDurationTimer);
             _postAnimationDurationTimer.Connect("timeout", this, nameof(OnPostAnimationDurationTimerTimeout));
 
-            // TODO: @Damir, uncomment
-            // _playButton.Connect("pressed", this, nameof(OnPlayButtonPressed));
             _isReady = true;
         }
 
@@ -98,8 +93,6 @@ namespace Game.Code.Levels
 
             _blueScoreLabel.Text = blueScore.ToString();
             _redScoreLabel.Text = redScore.ToString();
-            // TODO: @Damir, uncomment
-            // _playButton.Visible = false;
 
             AnimatePawn(_bluePawn, blueScore);
             AnimatePawn(_redPawn, redScore);
@@ -136,19 +129,10 @@ namespace Game.Code.Levels
             }
             else
             {
-                // @Damir, uncomment
-                // _playButton.Visible = true;
-                // @Damir, remove after uncomment
-                SceneManager.Instance.LoadJudoLevel();                
+                SceneManager.Instance.LoadJudoLevel();
             }
         }
 
-        private void OnPlayButtonPressed()
-        {
-            SceneManager.Instance.LoadJudoLevel();
-            // _playButton.Visible = false;
-        }
-        
         private void OnGameFinished(bool playerHasWon)
         {
             // TODO: Reset this object
