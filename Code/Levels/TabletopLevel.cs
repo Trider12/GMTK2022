@@ -16,10 +16,9 @@ namespace Game.Code.Levels
         private Tile[] _tiles;
         private Timer _postAnimationDurationTimer = new Timer();
 
-        private Control _endscreen;
-        private Label _endscreenLabel;
         private Button _playButton;
         private Button _playAgainButton;
+        private Label _playAgainLabel;
 
         private bool _isReady = false;
 
@@ -39,10 +38,10 @@ namespace Game.Code.Levels
             _redScoreLabel = GetNode<Label>("CanvasLayer/RedScoreLabel");
             _redScoreLabel.Text = GameManager.Instance.RedPlayerScore.ToString();
 
-            _endscreen = GetNode<Control>("CanvasLayer/EndScreen");
-            _endscreenLabel = GetNode<Label>("CanvasLayer/EndScreen/Label");
-            _playButton = GetNode<Button>("CanvasLayer/PlayButton");
-            _playAgainButton = GetNode<Button>("CanvasLayer/EndScreen/RestartButton");
+            // TODO: @Damir, replace path to Play button
+            // _playButton = GetNode<Button>(TODO);
+            // _playAgainButton = GetNode<Button>(TODO);
+            // _playAgainLabel = GetNode<Label>(TODO);
 
             var curve = GetNode<Path2D>("Path2D").Curve;
             _bluePawn = GetNode<Pawn>("Path2D/BluePawn");
@@ -68,9 +67,11 @@ namespace Game.Code.Levels
             AddChild(_postAnimationDurationTimer);
             _postAnimationDurationTimer.Connect("timeout", this, nameof(OnPostAnimationDurationTimerTimeout));
 
-            _playButton.Connect("pressed", this, nameof(OnPlayButtonPressed));
-            _playAgainButton.Connect("pressed", this, nameof(OnPlayAgainButtonPressed));
-            _endscreen.Visible = false;
+            // TODO: @Damir, uncomment
+            // _playButton.Connect("pressed", this, nameof(OnPlayButtonPressed));
+            // _playAgainButton.Connect("pressed", this, nameof(OnPlayAgainButtonPressed));
+            // _playAgainButton.Visible = false;
+            // _playAgainLabel.Visible = false;
 
             _isReady = true;
         }
@@ -107,7 +108,8 @@ namespace Game.Code.Levels
 
             _blueScoreLabel.Text = blueScore.ToString();
             _redScoreLabel.Text = redScore.ToString();
-            _playButton.Visible = false;
+            // TODO: @Damir, uncomment
+            // _playButton.Visible = false;
 
             AnimatePawn(_bluePawn, blueScore);
             AnimatePawn(_redPawn, redScore);
@@ -144,14 +146,17 @@ namespace Game.Code.Levels
             }
             else
             {
-                _playButton.Visible = true;
+                // @Damir, uncomment
+                // _playButton.Visible = true;
+                // @Damir, remove after uncomment
+                SceneManager.Instance.LoadJudoLevel();                
             }
         }
 
         private void OnPlayButtonPressed()
         {
             SceneManager.Instance.LoadJudoLevel();
-            _playButton.Visible = false;
+            // _playButton.Visible = false;
         }
         
         private void OnPlayAgainButtonPressed()
@@ -163,9 +168,15 @@ namespace Game.Code.Levels
 
         private void OnGameFinished(bool playerHasWon)
         {
-            _endscreen.Visible = true;
-            _endscreenLabel.Text = playerHasWon ? "You won!" : "You lose!";
-            _playButton.Visible = false;
+            // TODO: Reset this object
+            if (false)
+            {
+                // TODO: @Damir, UI needed
+                _playAgainLabel.Text = playerHasWon ? "You won!" : "You lose!";
+                _playAgainLabel.Visible = true;
+                _playAgainButton.Visible = true;
+                _playButton.Visible = false;
+            }
         }
     }
 }
