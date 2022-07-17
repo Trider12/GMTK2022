@@ -11,6 +11,8 @@ namespace Game.Code.Managers
     {
         private AudioStreamPlayer _musicPlayer = new AudioStreamPlayer();
         private AudioStreamPlayer[] _soundPlayers = new AudioStreamPlayer[4];
+        private AudioStreamPlayer _soundQueuePlayer = new AudioStreamPlayer();
+        private Queue<AudioStream> _soundQueue = new Queue<AudioStream>();
 
         public SoundManager()
         {
@@ -27,11 +29,25 @@ namespace Game.Code.Managers
             PauseMode = PauseModeEnum.Process;
             AddChild(_musicPlayer);
 
+            AddChild(_soundQueuePlayer);
+
             for (int i = 0; i < _soundPlayers.Length; i++)
             {
                 _soundPlayers[i] = new AudioStreamPlayer();
                 AddChild(_soundPlayers[i]);
             }
+
+            _soundQueuePlayer.Connect("finished", this, nameof(OnSoundQueueFinished));
+        }
+
+        private void OnSoundQueueFinished()
+        {
+            if (_soundQueue.Count == 0)
+                return;
+
+            AudioStream stream = _soundQueue.Dequeue();
+            _soundQueuePlayer.Stream = stream;
+            _soundQueuePlayer.Play();
         }
 
         public void PlayMainTheme()
@@ -128,6 +144,21 @@ namespace Game.Code.Managers
             AudioStream stream = SoundStreams[soundName];
             _soundPlayers[index].Stream = stream;
             _soundPlayers[index].Play();
+        }
+
+        private void PlayQueuedSound(string soundName)
+        {
+            AudioStream stream = SoundStreams[soundName];
+
+            if (!_soundQueuePlayer.Playing)
+            {
+                _soundQueuePlayer.Stream = stream;
+                _soundQueuePlayer.Play();
+            }
+            else
+            {
+                _soundQueue.Enqueue(stream);
+            }
         }
     }
 }

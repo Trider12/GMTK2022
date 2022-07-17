@@ -409,14 +409,14 @@ public class JudoLevel : Node2D, ILevel
         if (_playerHasWon)
         {
             SetMessageLabelText("You Win!");
-            SoundManager.Instance.PlayJudoWinSound();
             SoundManager.Instance.PlayJudoVoiceWinSound();
+            SoundManager.Instance.PlayJudoWinSound();
         }
         else
         {
             SetMessageLabelText("You Lose!");
-            SoundManager.Instance.PlayJudoLoseSound();
             SoundManager.Instance.PlayJudoVoiceLoseSound();
+            SoundManager.Instance.PlayJudoLoseSound();
         }
 
         _qteFinalMessageTimer.Start(_finalMessageDuration);
