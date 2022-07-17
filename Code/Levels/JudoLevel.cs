@@ -92,6 +92,7 @@ public class JudoLevel : Node2D, ILevel
 
     public void OnLevelLoad()
     {
+        UIManager.Instance.IsHUDVisible = true;
         SoundManager.Instance.PlayJudoTheme();
     }
 

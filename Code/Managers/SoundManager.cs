@@ -11,6 +11,7 @@ namespace Game.Code.Managers
     {
         private AudioStreamPlayer _musicPlayer = new AudioStreamPlayer();
         private AudioStreamPlayer[] _soundPlayers = new AudioStreamPlayer[4];
+
         private AudioStreamPlayer _soundQueuePlayer = new AudioStreamPlayer();
         private Queue<AudioStream> _soundQueue = new Queue<AudioStream>();
 
@@ -22,9 +23,9 @@ namespace Game.Code.Managers
 
         // DOESN'T WORK ON HTML BECAUSE OGG ARE NOT PRESENTED AS SEPARATE FILES (PACKED INTO BINARY)
         // USE https://github.com/hhyyrylainen/GodotPckTool FOR INSPECTING PCK FILES
-        // public static Dictionary<string, AudioStreamOGGVorbis> MusicStreams { get; } = ResourceHelper.LoadResourcesDictionary<AudioStreamOGGVorbis>("res://Assets/Music");
-        // public static Dictionary<string, AudioStreamOGGVorbis> SoundStreams { get; } = ResourceHelper.LoadResourcesDictionary<AudioStreamOGGVorbis>(new string[] { "res://Assets/Sounds/Tabletop", "res://Assets/Sounds/Judo" });
 
+        public static Dictionary<string, AudioStreamOGGVorbis> MusicStreams { get; } = ResourceHelper.LoadResourcesDictionary<AudioStreamOGGVorbis>("res://Assets/Music");
+        public static Dictionary<string, AudioStreamOGGVorbis> SoundStreams { get; } = ResourceHelper.LoadResourcesDictionary<AudioStreamOGGVorbis>(new string[] { "res://Assets/Sounds/Tabletop", "res://Assets/Sounds/Judo", "res://Assets/Sounds/UI" });
         public static SoundManager Instance { get; private set; }
 
         private static readonly string[] SoundPossibleSubPathNames = {"Judo", "Tabletop", "UI"};
@@ -74,14 +75,14 @@ namespace Game.Code.Managers
             _soundQueuePlayer.Connect("finished", this, nameof(OnSoundQueueFinished));
         }
 
-        private void OnSoundQueueFinished()
+        public void PlayClickButtonSound()
         {
-            if (_soundQueue.Count == 0)
-                return;
+            PlaySound("ClickButton", 2);
+        }
 
-            AudioStream stream = _soundQueue.Dequeue();
-            _soundQueuePlayer.Stream = stream;
-            _soundQueuePlayer.Play();
+        public void PlayClickStartButtonSound()
+        {
+            PlaySound("ClickStartButton", 2);
         }
 
         public void PlayMainMenuTheme()
@@ -158,6 +159,16 @@ namespace Game.Code.Managers
         {
             for (int i = 0; i < 4; i++)
                 StopSound(i);
+        }
+
+        private void OnSoundQueueFinished()
+        {
+            if (_soundQueue.Count == 0)
+                return;
+
+            AudioStream stream = _soundQueue.Dequeue();
+            _soundQueuePlayer.Stream = stream;
+            _soundQueuePlayer.Play();
         }
 
         private void PlayTheme(string themeName)

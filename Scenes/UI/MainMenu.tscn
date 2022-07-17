@@ -1,51 +1,175 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Code/UI/MainMenu.cs" type="Script" id=1]
-[ext_resource path="res://Assets/Themes/MainMenu.tres" type="Theme" id=2]
-[ext_resource path="res://Scenes/UI/SettingsWindow.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Textures/MainMenu/LogoBattleOfDice.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Textures/MainMenu/ButtonClose.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Textures/Tabletop/Board Game Background.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Textures/MainMenu/DiceBlue.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Textures/MainMenu/DiceRed.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Textures/MainMenu/MenuUIBackground.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Textures/MainMenu/MenuUIButtonPlay.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Themes/MainMenuButtonNormal.tres" type="StyleBox" id=9]
+[ext_resource path="res://Assets/Themes/MainMenuButtonPressed.tres" type="StyleBox" id=10]
+[ext_resource path="res://Assets/Themes/SeniorFont.tres" type="DynamicFont" id=11]
+[ext_resource path="res://Assets/Textures/MainMenu/VolumeLine.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Textures/MainMenu/VolumeDot.png" type="Texture" id=13]
+
+[sub_resource type="Theme" id=2]
+default_font = ExtResource( 11 )
+
+[sub_resource type="StyleBoxTexture" id=1]
+texture = ExtResource( 8 )
+region_rect = Rect2( 0, 0, 62, 19 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 4.0
+margin_bottom = 4.0
+
+[sub_resource type="StyleBoxTexture" id=3]
+texture = ExtResource( 12 )
+region_rect = Rect2( 0, 0, 46, 5 )
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 2 )
+theme = SubResource( 2 )
 script = ExtResource( 1 )
 
-[node name="Buttons" type="VBoxContainer" parent="."]
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="DiceBlue" type="Sprite" parent="Background"]
+position = Vector2( 56, 112 )
+texture = ExtResource( 5 )
+flip_h = true
+
+[node name="DiceRed" type="Sprite" parent="Background"]
+position = Vector2( 256, 48 )
+texture = ExtResource( 6 )
+
+[node name="LogoBattleOfDice" type="Sprite" parent="Background"]
+position = Vector2( 160, 38 )
+texture = ExtResource( 2 )
+
+[node name="Main" type="NinePatchRect" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -100.0
-margin_top = -150.0
-margin_right = 100.0
-margin_bottom = 150.0
-custom_constants/separation = 20
+margin_left = -57.0
+margin_top = -15.0
+margin_right = 57.0
+margin_bottom = 69.0
+texture = ExtResource( 7 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="Buttons" type="VBoxContainer" parent="Main"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -46.0
+margin_right = 50.0
+margin_bottom = 46.0
+custom_constants/separation = 6
 alignment = 1
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="NewGameButton" type="Button" parent="Buttons"]
-margin_top = 72.0
-margin_right = 200.0
-margin_bottom = 96.0
-text = "New Game"
+[node name="PlayButton" type="Button" parent="Main/Buttons"]
+margin_top = 11.0
+margin_right = 100.0
+margin_bottom = 30.0
+custom_styles/hover = ExtResource( 10 )
+custom_styles/pressed = ExtResource( 10 )
+custom_styles/normal = SubResource( 1 )
+text = "Play"
 
-[node name="SettingsButton" type="Button" parent="Buttons"]
-margin_top = 116.0
-margin_right = 200.0
-margin_bottom = 140.0
+[node name="SettingsButton" type="Button" parent="Main/Buttons"]
+margin_top = 36.0
+margin_right = 100.0
+margin_bottom = 55.0
+custom_styles/hover = ExtResource( 10 )
+custom_styles/pressed = ExtResource( 10 )
+custom_styles/normal = ExtResource( 9 )
 text = "Settings"
 
-[node name="AuthorsButton" type="Button" parent="Buttons"]
-margin_top = 160.0
-margin_right = 200.0
-margin_bottom = 184.0
+[node name="AuthorsButton" type="Button" parent="Main/Buttons"]
+margin_top = 61.0
+margin_right = 100.0
+margin_bottom = 80.0
+custom_styles/hover = ExtResource( 10 )
+custom_styles/pressed = ExtResource( 10 )
+custom_styles/normal = ExtResource( 9 )
 text = "Authors"
 
-[node name="ExitButton" type="Button" parent="Buttons"]
-margin_top = 204.0
-margin_right = 200.0
-margin_bottom = 228.0
+[node name="ExitButton" type="Button" parent="Main/Buttons"]
+visible = false
+margin_top = 144.0
+margin_right = 320.0
+margin_bottom = 168.0
 text = "Exit"
 
-[node name="SettingsWindow" parent="." instance=ExtResource( 3 )]
-margin_left = -210.0
-margin_right = 210.0
+[node name="Settings" type="NinePatchRect" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -62.0
+margin_top = -17.0
+margin_right = 62.0
+margin_bottom = 17.0
+texture = ExtResource( 7 )
+patch_margin_left = 6
+patch_margin_top = 6
+patch_margin_right = 6
+patch_margin_bottom = 6
+
+[node name="Label" type="Label" parent="Settings"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -34.5
+margin_top = -17.0
+margin_right = 34.5
+margin_bottom = 7.0
+text = "Volume"
+align = 1
+valign = 1
+
+[node name="HSlider" type="HSlider" parent="Settings"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_right = 50.0
+margin_bottom = 16.0
+custom_icons/grabber_highlight = ExtResource( 13 )
+custom_icons/grabber = ExtResource( 13 )
+custom_styles/slider = SubResource( 3 )
+step = 10.0
+scrollable = false
+
+[node name="CloseButton" type="TextureButton" parent="Settings"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 50.0
+margin_top = -28.0
+margin_right = 73.0
+margin_bottom = -5.0
+texture_normal = ExtResource( 3 )

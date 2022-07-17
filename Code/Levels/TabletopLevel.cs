@@ -71,6 +71,7 @@ namespace Game.Code.Levels
 
         public void OnLevelLoad()
         {
+            UIManager.Instance.IsHUDVisible = true;
             SoundManager.Instance.PlayTabletopTheme();
         }
 

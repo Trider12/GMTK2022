@@ -42,9 +42,9 @@ namespace Game.Code.Managers
             _pauseMenu.Visible = false;
             _pauseMenu.PauseMode = PauseModeEnum.Process;
 
-            GetNode<Button>("HUD/PauseButton").Connect("pressed", this, nameof(OnPauseButtonPressed));
-            GetNode<Button>("PauseMenu/Buttons/ResumeButton").Connect("pressed", this, nameof(OnResumeButtonPressed));
-            GetNode<Button>("PauseMenu/Buttons/MainMenuButton").Connect("pressed", this, nameof(OnMainMenuButtonPressed));
+            GetNode<TextureButton>("HUD/PauseButton").Connect("pressed", this, nameof(OnPauseButtonPressed));
+            GetNode<Button>("PauseMenu/Foreground/Buttons/ResumeButton").Connect("pressed", this, nameof(OnResumeButtonPressed));
+            GetNode<Button>("PauseMenu/Foreground/Buttons/MainMenuButton").Connect("pressed", this, nameof(OnMainMenuButtonPressed));
         }
 
         public void LoadMainMenu()
