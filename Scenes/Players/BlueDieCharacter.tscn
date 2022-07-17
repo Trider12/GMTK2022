@@ -147,5 +147,5 @@ animations = [ {
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 34 )
-animation = "Landed"
+animation = "Idle"
 flip_h = true
