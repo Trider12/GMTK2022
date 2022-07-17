@@ -335,11 +335,11 @@ public class JudoLevel : Node2D, ILevel
 
         if (_playerHasWon)
         {
-            _qteBarActionSoundPlayer.Stream = SoundManager.SoundStreams["Perfect"];
+            _qteBarActionSoundPlayer.Stream = SoundManager.GetSoundStreamByName("Perfect");
         }
         else
         {
-            _qteBarActionSoundPlayer.Stream = SoundManager.SoundStreams["Miss"];
+            _qteBarActionSoundPlayer.Stream = SoundManager.GetSoundStreamByName("Miss");
         }
 
         _qteBarActionSoundPlayer.Play();
@@ -399,7 +399,7 @@ public class JudoLevel : Node2D, ILevel
         uint index = GD.Randi() % 3;
         string soundName = new[] { "FightFall1", "FightFall2", "FightFall3" }[index];
 
-        _fightFallSoundPlayer.Stream = SoundManager.SoundStreams[soundName];
+        _fightFallSoundPlayer.Stream = SoundManager.GetSoundStreamByName(soundName);
         _fightFallSoundPlayer.Play();
         _fightFallSoundPlayer.Connect("finished", this, nameof(OnFightFallSoundPlayerFinished));
     }

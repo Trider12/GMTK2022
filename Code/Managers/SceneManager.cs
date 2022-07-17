@@ -41,7 +41,7 @@ namespace Game.Code.Managers
                 CurrentLevel = null;
             }
 
-            SoundManager.Instance.PlayMainTheme();
+            SoundManager.Instance.PlayMainMenuTheme();
         }
 
         public void LoadTabletopLoad()

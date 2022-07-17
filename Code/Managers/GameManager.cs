@@ -22,7 +22,8 @@ namespace Game.Code.Managers
         public override void _Ready()
         {
             GD.Randomize();
-            SoundManager.Instance.PlayMainTheme();
+            SoundManager.Instance.PlayMainMenuTheme();
+            GD.Print("SHOULD PLAY THEME IN WEB!");
         }
 
         public void LoadGame()
