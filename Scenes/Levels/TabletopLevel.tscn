@@ -189,6 +189,34 @@ texture = ExtResource( 3 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
+[node name="BlueScoreLabel" type="Label" parent="CanvasLayer"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 120.0
+margin_top = -21.0
+margin_right = 152.0
+margin_bottom = -5.0
+custom_colors/font_color = Color( 0, 0, 1, 1 )
+custom_fonts/font = ExtResource( 10 )
+text = "1"
+align = 1
+valign = 1
+
+[node name="RedScoreLabel" type="Label" parent="CanvasLayer"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -175.0
+margin_top = -21.0
+margin_right = -143.0
+margin_bottom = -5.0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_fonts/font = ExtResource( 10 )
+text = "1"
+align = 1
+valign = 1
+
 [node name="EndScreen" type="ColorRect" parent="CanvasLayer"]
 visible = false
 anchor_right = 1.0
@@ -220,35 +248,8 @@ text = "YOU WIN!"
 align = 1
 valign = 1
 
-[node name="BlueScoreLabel" type="Label" parent="CanvasLayer"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 120.0
-margin_top = -21.0
-margin_right = 152.0
-margin_bottom = -5.0
-custom_colors/font_color = Color( 0, 0, 1, 1 )
-custom_fonts/font = ExtResource( 10 )
-text = "1"
-align = 1
-valign = 1
-
-[node name="RedScoreLabel" type="Label" parent="CanvasLayer"]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -175.0
-margin_top = -21.0
-margin_right = -143.0
-margin_bottom = -5.0
-custom_colors/font_color = Color( 1, 0, 0, 1 )
-custom_fonts/font = ExtResource( 10 )
-text = "1"
-align = 1
-valign = 1
-
 [node name="PlayButton" type="Button" parent="CanvasLayer"]
+visible = false
 margin_left = 170.0
 margin_top = 154.0
 margin_right = 248.0
