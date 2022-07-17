@@ -50,7 +50,7 @@ animations = [ {
 "speed": 20.0
 } ]
 
-[node name="OmniLight_1" type="AnimatedSprite"]
+[node name="OmniLight" type="AnimatedSprite"]
 position = Vector2( -145, 5 )
 frames = SubResource( 11 )
-frame = 6
+playing = true

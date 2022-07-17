@@ -8,8 +8,8 @@ using Godot.Collections;
 
 public class JudoLevel : Node2D, ILevel
 {
-    private float _greenZoneStartValue;
-    private float _greenZoneEndValue;
+    private float _greenZoneStartValuePercents;
+    private float _greenZoneEndValuePercents;
 
     [Export]
     private float _playersBeginWalkDuration = 1.0f; // seconds
@@ -21,7 +21,7 @@ public class JudoLevel : Node2D, ILevel
     private float _qteFillDuration = 1.0f; // seconds
 
     [Export]
-    private float _qteGreenZoneCoverPercentage = 0.05f; // 0 - 1
+    private float _qteGreenZoneWidthPercents = 0.05f; // 0 - 1
 
     [Export]
     private float _qteHurryUpTime = 3.0f; // seconds
@@ -136,11 +136,11 @@ public class JudoLevel : Node2D, ILevel
     private void RandomizeGreenZonePosition()
     {
         float startValue = GD.Randf();
-        if (startValue + _qteGreenZoneCoverPercentage > 1.0f)
-            startValue = 1.0f - _qteGreenZoneCoverPercentage;
+        if (startValue + _qteGreenZoneWidthPercents > 1.0f)
+            startValue = 1.0f - _qteGreenZoneWidthPercents;
 
-        _greenZoneStartValue = startValue;
-        _greenZoneEndValue = startValue + _qteGreenZoneCoverPercentage;
+        _greenZoneStartValuePercents = startValue;
+        _greenZoneEndValuePercents = startValue + _qteGreenZoneWidthPercents;
     }
 
     private void ConfigureZoneWidgets()
@@ -148,20 +148,20 @@ public class JudoLevel : Node2D, ILevel
         Debug.Assert(_qteGreenZone != null);
 
         _qteGreenZone.RectSize = new Vector2(
-            _qteBar.RectSize.x * _qteGreenZoneCoverPercentage,
+            _qteBar.RectSize.x * _qteGreenZoneWidthPercents,
             _qteBar.RectSize.y
         );
 
         _qteGreenZone.RectPosition = new Vector2(
-            _qteBar.RectSize.x * _greenZoneStartValue,
+            _qteBar.RectSize.x * _greenZoneStartValuePercents,
             0
         );
     }
 
     private bool IsValueInGreenZone(float value)
     {
-        float valueNorm = value / 100.0f;
-        return valueNorm >= _greenZoneStartValue && valueNorm <= _greenZoneEndValue;
+        float valueNorm = (float)(value / _qteBar.MaxValue);
+        return valueNorm >= _greenZoneStartValuePercents && valueNorm <= _greenZoneEndValuePercents;
     }
 
     private void OnQteActionPressed()
