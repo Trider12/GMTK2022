@@ -326,6 +326,7 @@ public class JudoLevel : Node2D, ILevel
         _playerHasWon = playerHasWon;
         _gameIsFinished = true;
         _qteHurryUpLabel.Visible = false;
+        _qteMessageLabel.Visible = false;
 
         _qteGrabberMovementTween.StopAll();
 
@@ -356,7 +357,6 @@ public class JudoLevel : Node2D, ILevel
         }
         else
         {
-            _qteMessageLabel.Visible = false; // Hide "Tap to throw" message
             PlayThrowAnimation(_opponentCharacter, _playerCharacter, -1);
         }
     }
