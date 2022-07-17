@@ -341,6 +341,7 @@ public class JudoLevel : Node2D, ILevel
 
         if (_playerHasWon)
         {
+            SetStatusLabelText("Perfect!");
             PlayThrowAnimation(_playerCharacter, _opponentCharacter, 1);
         }
         else
