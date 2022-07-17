@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/UI_UI-UnderButton.ogg-30de4ad02e51dbd7070d2d0e194e3ed2.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/UI/UI_UI-UnderButton.ogg"
+dest_files=[ "res://.import/UI_UI-UnderButton.ogg-30de4ad02e51dbd7070d2d0e194e3ed2.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

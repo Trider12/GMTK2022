@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/SFX_MoovingFigure_Start.ogg-f39e31b8b38a8718401d619e98f03ba8.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/UI/SFX_MoovingFigure_Start.ogg"
+dest_files=[ "res://.import/SFX_MoovingFigure_Start.ogg-f39e31b8b38a8718401d619e98f03ba8.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

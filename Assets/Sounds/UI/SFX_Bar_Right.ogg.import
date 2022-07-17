@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/SFX_Bar_Right.ogg-e6d0884a0102623fcc585d78fd6f3387.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/UI/SFX_Bar_Right.ogg"
+dest_files=[ "res://.import/SFX_Bar_Right.ogg-e6d0884a0102623fcc585d78fd6f3387.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
