@@ -253,6 +253,13 @@ public class JudoLevel : Node2D, ILevel
         _qteFinalMessageTimer.OneShot = true;
         _qteFinalMessageTimer.Connect("timeout", this, nameof(OnFinalMessageDurationTimerTimout));
 
+
+        float _difficultyChange = GameManager.Instance.DifficultyPercentage - 1.0f;
+        _difficultyChange *= 0.2f;
+        float _newDuration = _qteFillDuration - _difficultyChange;
+        GD.Print("QTE Dur:" + _qteFillDuration + ", Difficulty: " + _difficultyChange + ", (Perc): " + GameManager.Instance.DifficultyPercentage + ", New dur: " + _newDuration);
+        _qteFillDuration = _newDuration;
+
         ConfigureZoneWidgets();
 
         _qteCurrentTweenIsLTR = false;

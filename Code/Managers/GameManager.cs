@@ -17,7 +17,7 @@ namespace Game.Code.Managers
         public uint BluePlayerScore { get; set; } = 1;
         public uint RedPlayerScore { get; set; } = 1;
         public uint MaxScore { get; set; } = 1;
-        public float DifficultyPercentage => 1f + (BluePlayerScore - RedPlayerScore) * 1f / MaxScore; // [0 - 2]
+        public float DifficultyPercentage => 1f + (float)((int)BluePlayerScore - (int)RedPlayerScore) / MaxScore; // [0 - 2]
 
         public override void _Ready()
         {
