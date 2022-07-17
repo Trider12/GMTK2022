@@ -48,7 +48,7 @@ namespace Game.Code.Levels
                 GameManager.Instance.RedPlayerScore += _score;
             }
 
-            SceneManager.Instance.LoadTabletopScene();
+            SceneManager.Instance.LoadTabletopLoad();
         }
     }
 }

@@ -3,7 +3,7 @@
 [ext_resource path="res://Code/Levels/JudoLevel.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/Players/RedDieCharacter.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Textures/Misc/WhiteSquare.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Textures/Widgets/QTE_Handle.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Textures/Misc/EmptyTexture.png" type="Texture" id=4]
 [ext_resource path="res://Scenes/Players/BlueDieCharacter.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Fonts/Pixel/Pixel-Regular.ttf" type="DynamicFontData" id=7]
 [ext_resource path="res://Scenes/JudoObjects/OmniLight.tscn" type="PackedScene" id=9]
@@ -27,11 +27,11 @@ size = 10
 font_data = ExtResource( 7 )
 
 [sub_resource type="DynamicFont" id=17]
-size = 20
+size = 10
 font_data = ExtResource( 7 )
 
 [sub_resource type="DynamicFont" id=18]
-size = 50
+size = 30
 font_data = ExtResource( 7 )
 
 [node name="JudoLevel" type="Node2D"]
@@ -117,29 +117,35 @@ position = Vector2( 301, 14 )
 [node name="HSlider" type="HSlider" parent="HUD"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -64.0
-margin_top = 161.0
-margin_right = 64.0
-margin_bottom = 177.0
+margin_left = -50.0
+margin_top = 16.0
+margin_right = 50.0
+margin_bottom = 32.0
 rect_clip_content = true
-custom_icons/grabber_disabled = ExtResource( 5 )
+custom_icons/grabber_disabled = ExtResource( 4 )
 custom_styles/slider = SubResource( 15 )
 custom_styles/grabber_area_highlight = SubResource( 13 )
 custom_styles/grabber_area = SubResource( 14 )
 step = 0.1
-value = 26.8
 editable = false
 scrollable = false
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="GreenZone" type="ColorRect" parent="HUD/HSlider"]
-margin_right = 40.0
-margin_bottom = 20.0
-color = Color( 0.54902, 1, 0.00392157, 0.721569 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.54902, 1, 0, 0.705882 )
+
+[node name="YellowZone" type="ColorRect" parent="HUD/HSlider"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 1, 0.937255, 0, 0.705882 )
 
 [node name="HurryUpLabel" type="Label" parent="HUD/HSlider"]
-anchor_top = 0.05
 anchor_right = 1.0
-anchor_bottom = 0.05
+anchor_bottom = 1.0
 custom_fonts/font = SubResource( 16 )
 text = "Hurry up!"
 align = 1
@@ -149,9 +155,9 @@ valign = 1
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -160.0
-margin_top = 52.0
+margin_top = 43.0
 margin_right = 160.0
-margin_bottom = 68.0
+margin_bottom = 67.0
 custom_fonts/font = SubResource( 17 )
 text = "Perfect!"
 align = 1
@@ -162,9 +168,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -167.0
+margin_left = -160.0
 margin_top = -45.0
-margin_right = 167.0
+margin_right = 160.0
 margin_bottom = 45.0
 size_flags_horizontal = 0
 size_flags_vertical = 0

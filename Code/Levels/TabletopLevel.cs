@@ -12,15 +12,17 @@ namespace Game.Code.Levels
     {
         private Pawn _bluePawn, _redPawn;
         private Label _blueScoreLabel, _redScoreLabel;
-        private Button _rollButton;
-        private Tween _animationTween = new Tween();
+        private Tween _pawnsMovementTween = new Tween();
         private Tile[] _tiles;
+        private Timer _postAnimationDurationTimer = new Timer();
+
+        private bool _isReady = false;
 
         [Export]
-        public float PawnSpeed { get; set; } = 100f;
+        public float PostAnimationDuration { get; private set; } = 2f;
 
         [Export]
-        public string[] MinigameNames { get; set; } = { "JudoLevel" };
+        public float PawnSpeed { get; private set; } = 100f;
 
         public Node2D World => this;
         public bool NeedsToUpdatePawns { get; set; } = false;
@@ -49,11 +51,13 @@ namespace Game.Code.Levels
                 tile.Offset = curve.GetClosestOffset(curve.GetPointPosition(i));
             }
 
-            _rollButton = GetNode<Button>("CanvasLayer/RollButton");
-            _rollButton.Connect("pressed", this, nameof(OnRollButtonPressed));
+            AddChild(_pawnsMovementTween);
+            _pawnsMovementTween.Connect("tween_all_completed", this, nameof(OnPawnsMovementTweenCompleted));
 
-            AddChild(_animationTween);
-            _animationTween.Connect("tween_all_completed", this, nameof(OnAnimationTweenCompleted));
+            AddChild(_postAnimationDurationTimer);
+            _postAnimationDurationTimer.Connect("timeout", this, nameof(OnPostAnimationDurationTimerTimeout));
+
+            _isReady = true;
         }
 
         public override void _PhysicsProcess(float delta)
@@ -77,7 +81,7 @@ namespace Game.Code.Levels
         {
             NeedsToUpdatePawns = false;
 
-            if (_rollButton == null)
+            if (!_isReady)
             {
                 return;
             }
@@ -85,18 +89,17 @@ namespace Game.Code.Levels
             uint blueScore = GameManager.Instance.BluePlayerScore;
             uint redScore = GameManager.Instance.RedPlayerScore;
 
-            _rollButton.Visible = false;
             _blueScoreLabel.Text = blueScore.ToString();
             _redScoreLabel.Text = redScore.ToString();
 
             AnimatePawn(_bluePawn, blueScore);
             AnimatePawn(_redPawn, redScore);
-            _animationTween.Start();
+            _pawnsMovementTween.Start();
         }
 
-        private void OnAnimationTweenCompleted()
+        private void OnPawnsMovementTweenCompleted()
         {
-            _rollButton.Visible = true;
+            _postAnimationDurationTimer.Start(PostAnimationDuration);
         }
 
         private void AnimatePawn(Pawn pawn, uint score)
@@ -106,14 +109,14 @@ namespace Game.Code.Levels
             float targetOffset = _tiles[index].Offset;
             float delta = targetOffset - initialOffset;
             float time = delta < 0.1f ? 0f : delta / PawnSpeed;
-            _animationTween.InterpolateProperty(pawn, "offset", initialOffset, targetOffset, time);
+            _pawnsMovementTween.InterpolateProperty(pawn, "offset", initialOffset, targetOffset, time);
         }
 
-        private void OnRollButtonPressed()
+        private void OnPostAnimationDurationTimerTimeout()
         {
-            uint levelIndex = GD.Randi() % (uint)MinigameNames.Length;
+            _postAnimationDurationTimer.Stop(); // this is weird
 
-            SceneManager.Instance.LoadLevel(MinigameNames[levelIndex]);
+            SceneManager.Instance.LoadJudoLevel();
         }
     }
 }

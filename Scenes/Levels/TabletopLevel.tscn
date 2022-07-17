@@ -13,7 +13,7 @@ shader_param/u_color = Color( 0.321569, 0.223529, 0.0588235, 1 )
 
 [sub_resource type="Curve2D" id=1]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 48, 32, 0, 0, 0, 0, 80, 32, 0, 0, 0, 0, 144, 32, 0, 0, 0, 0, 176, 32, 0, 0, 0, 0, 240, 32, 0, 0, 0, 0, 272, 48, 0, 0, 0, 0, 240, 64, 0, 0, 0, 0, 208, 64, 0, 0, 0, 0, 176, 64, 0, 0, 0, 0, 144, 64, 0, 0, 0, 0, 112, 64, 0, 0, 0, 0, 80, 64, 0, 0, 0, 0, 48, 80, 0, 0, 0, 0, 80, 96, 0, 0, 0, 0, 112, 96, 0, 0, 0, 0, 176, 96, 0, 0, 0, 0, 208, 96, 0, 0, 0, 0, 240, 96, 0, 0, 0, 0, 272, 112, 0, 0, 0, 0, 240, 128, 0, 0, 0, 0, 208, 128, 0, 0, 0, 0, 144, 128, 0, 0, 0, 0, 112, 128, 0, 0, 0, 0, 80, 128, 0, 0, 0, 0, 48, 128 )
+"points": PoolVector2Array( 0, 0, 0, 0, 48, 32, 0, 0, 0, 0, 80, 32, 0, 0, 0, 0, 144, 32, 0, 0, 0, 0, 176, 32, 0, 0, 0, 0, 240, 32, 0, 0, 0, 0, 272, 48, 0, 0, 0, 0, 240, 64, 0, 0, 0, 0, 208, 64, 0, 0, 0, 0, 176, 64, 0, 0, 0, 0, 144, 64, 0, 0, 0, 0, 112, 64, 0, 0, 0, 0, 80, 64, 0, 0, 0, 0, 48, 80, 0, 0, 0, 0, 80, 96, 0, 0, 0, 0, 112, 96, 0, 0, 0, 0, 160, 104, 0, 0, 0, 0, 208, 96, 0, 0, 0, 0, 240, 96, 0, 0, 0, 0, 272, 112, 0, 0, 0, 0, 240, 128, 0, 0, 0, 0, 208, 128, 0, 0, 0, 0, 160, 136, 0, 0, 0, 0, 112, 128, 0, 0, 0, 0, 80, 128, 0, 0, 0, 0, 48, 128 )
 }
 
 [sub_resource type="ShaderMaterial" id=3]
@@ -88,7 +88,7 @@ position = Vector2( 80, 96 )
 position = Vector2( 112, 96 )
 
 [node name="Tile21" parent="Tiles" instance=ExtResource( 2 )]
-position = Vector2( 176, 96 )
+position = Vector2( 160, 104 )
 
 [node name="Tile22" parent="Tiles" instance=ExtResource( 2 )]
 position = Vector2( 208, 96 )
@@ -106,7 +106,7 @@ position = Vector2( 240, 128 )
 position = Vector2( 208, 128 )
 
 [node name="Tile29" parent="Tiles" instance=ExtResource( 2 )]
-position = Vector2( 144, 128 )
+position = Vector2( 160, 136 )
 
 [node name="Tile30" parent="Tiles" instance=ExtResource( 2 )]
 position = Vector2( 112, 128 )
@@ -140,24 +140,12 @@ material = SubResource( 4 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="RollButton" type="Button" parent="CanvasLayer"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -60.0
-margin_top = -29.0
-margin_right = 60.0
-margin_bottom = -9.0
-custom_fonts/font = ExtResource( 5 )
-text = "Roll the Dice!"
-
 [node name="BlueScoreLabel" type="Label" parent="CanvasLayer"]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 32.0
+margin_left = 128.0
 margin_top = -28.0
-margin_right = 64.0
+margin_right = 160.0
 margin_bottom = -12.0
 custom_colors/font_color = Color( 0, 0, 1, 1 )
 custom_fonts/font = ExtResource( 5 )
@@ -170,9 +158,9 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -64.0
+margin_left = -160.0
 margin_top = -28.0
-margin_right = -32.0
+margin_right = -128.0
 margin_bottom = -12.0
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 custom_fonts/font = ExtResource( 5 )

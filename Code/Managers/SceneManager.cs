@@ -44,10 +44,15 @@ namespace Game.Code.Managers
             SoundManager.Instance.PlayMainTheme();
         }
 
-        public void LoadTabletopScene()
+        public void LoadTabletopLoad()
         {
             _tabletopLevel.NeedsToUpdatePawns = true;
             LoadLevel(_tabletopLevel);
+        }
+
+        public void LoadJudoLevel()
+        {
+            LoadLevel("JudoLevel");
         }
 
         public void LoadDiceLevel(bool playerHasWon)

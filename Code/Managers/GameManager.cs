@@ -29,7 +29,7 @@ namespace Game.Code.Managers
             BluePlayerScore = 1;
             RedPlayerScore = 1;
 
-            SceneManager.Instance.LoadTabletopScene();
+            SceneManager.Instance.LoadJudoLevel();
         }
     }
 }

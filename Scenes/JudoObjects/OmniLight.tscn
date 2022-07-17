@@ -47,9 +47,8 @@ animations = [ {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ) ],
 "loop": true,
 "name": "default",
-"speed": 20.0
+"speed": 8.0
 } ]
 
 [node name="OmniLight" type="AnimatedSprite"]
-position = Vector2( -145, 5 )
 frames = SubResource( 11 )
