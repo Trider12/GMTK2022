@@ -18,7 +18,6 @@ config/icon="res://Assets/Icons/icon.png"
 
 GameManager="*res://Code/Managers/GameManager.cs"
 UiManager="*res://Scenes/UI/UIManager.tscn"
-DebugManager="*res://Scenes/UI/DebugManager.tscn"
 SoundManager="*res://Code/Managers/SoundManager.cs"
 
 [display]
