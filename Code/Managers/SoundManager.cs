@@ -54,7 +54,7 @@ namespace Game.Code.Managers
             PlaySound("PawnPlaced");
         }
 
-        public void PlayJudoFightHitSound()
+        public void PlayJudoFightThrowSound()
         {
             PlaySound("FightHit");
         }
@@ -91,7 +91,7 @@ namespace Game.Code.Managers
 
         public void PlayJudoVoiceWinSound()
         {
-            // TODO
+            PlaySound("VoiceWin");
         }
 
         private void PlayTheme(string themeName)
