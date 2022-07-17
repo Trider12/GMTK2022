@@ -28,10 +28,15 @@ namespace Game.Code.Managers
 
         public void LoadGame()
         {
-            BluePlayerScore = 1;
-            RedPlayerScore = 1;
+            Reset();
 
             SceneManager.Instance.LoadJudoLevel();
+        }
+
+        public void Reset()
+        {
+            BluePlayerScore = 1;
+            RedPlayerScore = 1;
         }
     }
 }

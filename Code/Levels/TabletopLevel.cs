@@ -17,6 +17,9 @@ namespace Game.Code.Levels
         private Timer _postAnimationDurationTimer = new Timer();
 
         private Button _playButton;
+        private Button _playAgainButton;
+        private Label _playAgainLabel;
+
         private bool _isReady = false;
 
         [Export]
@@ -37,6 +40,9 @@ namespace Game.Code.Levels
 
             // TODO: @Damir, replace path to Play button
             // _playButton = GetNode<Button>(TODO);
+            // _playAgainButton = GetNode<Button>(TODO);
+            // _playAgainLabel = GetNode<Label>(TODO);
+
             var curve = GetNode<Path2D>("Path2D").Curve;
             _bluePawn = GetNode<Pawn>("Path2D/BluePawn");
             _bluePawn.UnitOffset = 0f;
@@ -63,6 +69,10 @@ namespace Game.Code.Levels
 
             // TODO: @Damir, uncomment
             // _playButton.Connect("pressed", this, nameof(OnPlayButtonPressed));
+            // _playAgainButton.Connect("pressed", this, nameof(OnPlayAgainButtonPressed));
+            // _playAgainButton.Visible = false;
+            // _playAgainLabel.Visible = false;
+
             _isReady = true;
         }
 
@@ -149,12 +159,24 @@ namespace Game.Code.Levels
             // _playButton.Visible = false;
         }
         
+        private void OnPlayAgainButtonPressed()
+        {
+            SceneManager.Instance.ResetTabletop();
+            GameManager.Instance.Reset();
+            SceneManager.Instance.LoadJudoLevel();
+        }
+
         private void OnGameFinished(bool playerHasWon)
         {
             // TODO: Reset this object
-
-            SceneManager.Instance.LoadMainMenu();
-            SceneManager.Instance.ResetTabletop();
+            if (false)
+            {
+                // TODO: @Damir, UI needed
+                _playAgainLabel.Text = playerHasWon ? "You won!" : "You lose!";
+                _playAgainLabel.Visible = true;
+                _playAgainButton.Visible = true;
+                _playButton.Visible = false;
+            }
         }
     }
 }
