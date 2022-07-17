@@ -10,7 +10,7 @@ namespace Game.Code.Managers
     public class SoundManager : Node2D
     {
         private AudioStreamPlayer _musicPlayer = new AudioStreamPlayer();
-        private AudioStreamPlayer _soundPlayer = new AudioStreamPlayer();
+        private AudioStreamPlayer[] _soundPlayers = new AudioStreamPlayer[4];
 
         public SoundManager()
         {
@@ -26,7 +26,12 @@ namespace Game.Code.Managers
         {
             PauseMode = PauseModeEnum.Process;
             AddChild(_musicPlayer);
-            AddChild(_soundPlayer);
+
+            for (int i = 0; i < _soundPlayers.Length; i++)
+            {
+                _soundPlayers[i] = new AudioStreamPlayer();
+                AddChild(_soundPlayers[i]);
+            }
         }
 
         public void PlayMainTheme()
@@ -86,12 +91,23 @@ namespace Game.Code.Managers
 
         public void PlayJudoVoiceLoseSound()
         {
-            PlaySound("VoiceLose");
+            PlaySound("VoiceLose", 1);
         }
 
         public void PlayJudoVoiceWinSound()
         {
-            PlaySound("VoiceWin");
+            PlaySound("VoiceWin", 1);
+        }
+
+        public void StopSound(int index)
+        {
+            _soundPlayers[index].Stop();
+        }
+
+        public void StopAllSounds()
+        {
+            for (int i = 0; i < 4; i++)
+                StopSound(i);
         }
 
         private void PlayTheme(string themeName)
@@ -107,11 +123,11 @@ namespace Game.Code.Managers
             _musicPlayer.Play();
         }
 
-        private void PlaySound(string soundName)
+        private void PlaySound(string soundName, int index = 0)
         {
             AudioStream stream = SoundStreams[soundName];
-            _soundPlayer.Stream = stream;
-            _soundPlayer.Play();
+            _soundPlayers[index].Stream = stream;
+            _soundPlayers[index].Play();
         }
     }
 }
