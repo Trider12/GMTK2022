@@ -63,6 +63,7 @@ public class JudoLevel : Node2D, ILevel
 
     private bool _qteCurrentTweenIsLTR = true;
     private bool _playerHasWon = false;
+    private bool _gameBegan = false;
     private bool _gameIsFinished = false;
     private Tween _inFlightAnimationTween;
 
@@ -117,7 +118,7 @@ public class JudoLevel : Node2D, ILevel
 
     public override void _Input(InputEvent @event)
     {
-        if (!_gameIsFinished && Input.IsActionPressed("fire"))
+        if (!_gameIsFinished && _gameBegan && Input.IsActionPressed("fire"))
         {
             OnQteActionPressed();
         }
@@ -295,6 +296,8 @@ public class JudoLevel : Node2D, ILevel
 
         _playersShakingAnimationTween.Connect("tween_all_completed", this, nameof(RestartShakingPlayersTween));
         RestartShakingPlayersTween();
+
+        _gameBegan = true;
     }
 
     private void RestartShakingPlayersTween()
