@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/VoiceFight.ogg-c0cf910accf7115bddff2680d293ba75.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/Judo/VoiceFight.ogg"
+dest_files=[ "res://.import/VoiceFight.ogg-c0cf910accf7115bddff2680d293ba75.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

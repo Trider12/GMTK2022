@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/JudoWin.ogg-32e437982f087a0511a1e78693798007.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/Judo/JudoWin.ogg"
+dest_files=[ "res://.import/JudoWin.ogg-32e437982f087a0511a1e78693798007.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

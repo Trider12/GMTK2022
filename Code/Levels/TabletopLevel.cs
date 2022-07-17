@@ -70,7 +70,7 @@ namespace Game.Code.Levels
 
         public void OnLevelLoad()
         {
-            SoundManager.Instance.PlayMainTheme();
+            SoundManager.Instance.PlayTabletopTheme();
         }
 
         public void OnLevelUnload()
@@ -100,6 +100,7 @@ namespace Game.Code.Levels
         private void OnPawnsMovementTweenCompleted()
         {
             _postAnimationDurationTimer.Start(PostAnimationDuration);
+            SoundManager.Instance.PlayTabletopPawnPlacedSound();
         }
 
         private void AnimatePawn(Pawn pawn, uint score)

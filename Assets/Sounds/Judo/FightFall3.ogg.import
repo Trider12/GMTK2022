@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/FightFall3.ogg-a75145f6b6c9dc3102303da013586743.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/Judo/FightFall3.ogg"
+dest_files=[ "res://.import/FightFall3.ogg-a75145f6b6c9dc3102303da013586743.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

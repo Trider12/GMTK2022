@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/TabletopVictory.ogg-c0b419a4e20f6363244e82f76730f3d5.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/Tabletop/TabletopVictory.ogg"
+dest_files=[ "res://.import/TabletopVictory.ogg-c0b419a4e20f6363244e82f76730f3d5.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

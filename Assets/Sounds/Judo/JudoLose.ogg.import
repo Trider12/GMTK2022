@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/JudoLose.ogg-bb2606d177f38f4c108c38a101d2f430.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/Judo/JudoLose.ogg"
+dest_files=[ "res://.import/JudoLose.ogg-bb2606d177f38f4c108c38a101d2f430.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

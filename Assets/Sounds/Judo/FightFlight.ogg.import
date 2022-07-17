@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/FightFlight.ogg-3d75f5b20623d92b1d5ac8ca31525bc5.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/Judo/FightFlight.ogg"
+dest_files=[ "res://.import/FightFlight.ogg-3d75f5b20623d92b1d5ac8ca31525bc5.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
