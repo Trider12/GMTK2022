@@ -128,7 +128,11 @@ namespace Game.Code.Managers
 
         private void PlayTheme(string themeName)
         {
-            AudioStream stream = MusicStreams[themeName];
+            AudioStreamOGGVorbis stream = GD.Load<AudioStreamOGGVorbis>("res://Assets/Music/" + themeName + ".ogg");
+
+            // DOESN'T WORK ON HTML BECAUSE OGG ARE NOT PRESENTED AS SEPARATE FILES (PACKED INTO BINARY)
+            // USE https://github.com/hhyyrylainen/GodotPckTool FOR INSPECTING PCK FILES
+            // AudioStream stream = MusicStreams[themeName]; 
 
             if (stream == _musicPlayer.Stream)
             {
@@ -141,14 +145,23 @@ namespace Game.Code.Managers
 
         private void PlaySound(string soundName, int index = 0)
         {
-            AudioStream stream = SoundStreams[soundName];
+            AudioStreamOGGVorbis stream = GD.Load<AudioStreamOGGVorbis>("res://Assets/Sounds/" + soundName + ".ogg");
+
+            // DOESN'T WORK ON HTML BECAUSE OGG ARE NOT PRESENTED AS SEPARATE FILES (PACKED INTO BINARY)
+            // USE https://github.com/hhyyrylainen/GodotPckTool FOR INSPECTING PCK FILES
+            // AudioStream stream = SoundStreams[soundName];
+
             _soundPlayers[index].Stream = stream;
             _soundPlayers[index].Play();
         }
 
         private void PlayQueuedSound(string soundName)
         {
-            AudioStream stream = SoundStreams[soundName];
+            AudioStreamOGGVorbis stream = GD.Load<AudioStreamOGGVorbis>("res://Assets/Sounds/" + soundName + ".ogg");
+
+            // DOESN'T WORK ON HTML BECAUSE OGG ARE NOT PRESENTED AS SEPARATE FILES (PACKED INTO BINARY)
+            // USE https://github.com/hhyyrylainen/GodotPckTool FOR INSPECTING PCK FILES
+            // AudioStream stream = SoundStreams[soundName];
 
             if (!_soundQueuePlayer.Playing)
             {
