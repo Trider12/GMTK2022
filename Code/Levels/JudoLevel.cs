@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Linq;
 
 using Game.Code.Interfaces;
 using Game.Code.Managers;
@@ -29,15 +30,26 @@ public class JudoLevel : Node2D, ILevel
     [Export]
     private float _qteTimeToLoseAfterHurryUp = 2.0f; // seconds
 
+    [Export]
+    private int _startBattleCountdownTime = 3; // seconds
+
+    [Export]
+    private int _throwDistance = 70;
+
+    [Export]
+    private float _inFlightAnimationDuration = 0.5f; // seconds
+
     private AnimatedSprite _playerCharacter;
     private AnimatedSprite _opponentCharacter;
     private Node2D _playerWalkTarget;
     private Node2D _opponentWalkTarget;
+    private Node2D _omniLightsParent;
 
     private HSlider _qteBar;
     private ColorRect _qteGreenZone;
     private Label _qteHurryUpLabel;
     private Label _qteLabel;
+    private Label _countdownLabel;
 
     private Tween _playersInitialWalkAnimationTween;
     private Tween _playersShakingAnimationTween;
@@ -45,9 +57,14 @@ public class JudoLevel : Node2D, ILevel
 
     private Timer _qteHurryUpTimer;
     private Timer _qteLoseTimer;
+    private Tween _startBattleCountdownTween;
+
+    private float _countdownValue;
+
     private bool _qteCurrentTweenIsLTR = true;
     private bool _playerHasWon = false;
     private bool _gameIsFinished = false;
+    private Tween _inFlightAnimationTween;
 
     public Node2D World => this;
 
@@ -57,6 +74,16 @@ public class JudoLevel : Node2D, ILevel
         _opponentCharacter = GetNode<AnimatedSprite>("Characters/Opponent/AnimatedSprite");
         _playerWalkTarget = GetNode<Node2D>("Characters/BeginGameTargetPosition_Player");
         _opponentWalkTarget = GetNode<Node2D>("Characters/BeginGameTargetPosition_Opponent");
+        _omniLightsParent = GetNode<Node2D>("Arena/Scaffolding/OmniLights");
+
+        _qteBar = GetNode<HSlider>("HUD/HSlider");
+        _qteGreenZone = GetNode<ColorRect>("HUD/HSlider/GreenZone");
+        _qteHurryUpLabel = GetNode<Label>("HUD/HSlider/HurryUpLabel");
+        _qteLabel = GetNode<Label>("HUD/StatusLabel");
+        _countdownLabel = GetNode<Label>("HUD/CountdownLabel");
+
+        _startBattleCountdownTween = new Tween();
+        AddChild(_startBattleCountdownTween);
 
         _playersInitialWalkAnimationTween = new Tween();
         _playersInitialWalkAnimationTween.InterpolateProperty(_playerCharacter, "global_position", _playerCharacter.GlobalPosition, _playerWalkTarget.GlobalPosition, _playersBeginWalkDuration);
@@ -65,16 +92,14 @@ public class JudoLevel : Node2D, ILevel
 
         _playersShakingAnimationTween = new Tween();
         AddChild(_playersShakingAnimationTween);
-
-        _qteBar = GetNode<HSlider>("QTE/HSlider");
-        _qteGreenZone = GetNode<ColorRect>("QTE/HSlider/GreenZone");
-        _qteHurryUpLabel = GetNode<Label>("QTE/HSlider/HurryUpLabel");
-        _qteLabel = GetNode<Label>("QTE/StatusLabel");
-
+        
         _qteFillTween = new Tween();
         _qteFillTween.Connect("tween_completed", this, nameof(SwapQteBarTweenDirection));
         AddChild(_qteFillTween);
 
+        _inFlightAnimationTween = new Tween();
+        AddChild(_inFlightAnimationTween);
+        
         Reset();
 
         BeginGame();
@@ -131,6 +156,9 @@ public class JudoLevel : Node2D, ILevel
 
         _qteGreenZone.Visible = false;
         _qteBar.Value = 0;
+
+        foreach (AnimatedSprite light in _omniLightsParent.GetChildren().OfType<AnimatedSprite>())
+            light.Playing = true;
     }
 
     private void RandomizeGreenZonePosition()
@@ -171,27 +199,31 @@ public class JudoLevel : Node2D, ILevel
         FinishGame(IsValueInGreenZone(currentValue));
     }
 
-    private void PlayThrowAnimation(AnimatedSprite thrower, AnimatedSprite throwee, float flightDirection)
+    private void PlayThrowAnimation(AnimatedSprite thrower, AnimatedSprite throwee, int flightDirection)
     {
+        // TODO: Play "Throw" sound
+
         SetCharacterAnimation(thrower, "Throw");
 
         thrower.Connect("animation_finished", this, nameof(OnAfterThrowerPlayedAnimation), new Array { throwee, flightDirection });
     }
 
-    private void OnAfterThrowerPlayedAnimation(AnimatedSprite throwee, float flightDirection)
+    private void OnAfterThrowerPlayedAnimation(AnimatedSprite throwee, int flightDirection)
     {
         SetCharacterAnimation(throwee, "InFlight");
 
-        Tween throwTween = new Tween();
-        AddChild(throwTween);
-
-        throwTween.Connect("tween_all_completed", this, nameof(OnThrowTweenCompleted));
-        throwTween.InterpolateProperty(throwee, "position", throwee.Position, throwee.Position + new Vector2(100 * flightDirection, 0), 0.5f, Tween.TransitionType.Linear);
-        throwTween.Start();
+        _inFlightAnimationTween.Connect("tween_all_completed", this, nameof(OnInFlightTweenCompleted));
+        _inFlightAnimationTween.InterpolateProperty(throwee, "position", throwee.Position, throwee.Position + new Vector2(_throwDistance * flightDirection, 0), _inFlightAnimationDuration);
+        _inFlightAnimationTween.Start();
     }
 
-    private void OnThrowTweenCompleted()
+    private void OnInFlightTweenCompleted()
     {
+        // TODO: Play "Fall" sound
+        // TODO: Play "You win/You lose" sound
+        // TODO: Play "You win/You lose" music
+
+        // After all sounds played do
         SceneManager.Instance.LoadDiceLevel(_playerHasWon);
     }
 
@@ -203,6 +235,25 @@ public class JudoLevel : Node2D, ILevel
 
     private void BeginGame()
     {
+        _startBattleCountdownTween.InterpolateProperty(this, nameof(_countdownValue), _startBattleCountdownTime, -1, _startBattleCountdownTime);
+        _startBattleCountdownTween.Connect("tween_all_completed", this, nameof(OnStartBattleCountdownTweenCompleted));
+        _startBattleCountdownTween.Connect("tween_step", this, nameof(OnStartBattleCountdownTweenStep));
+        _startBattleCountdownTween.Start();
+    }
+
+    private void OnStartBattleCountdownTweenStep(Object @object, NodePath key, float elapsed, float value)
+    {
+        if (value > 0)
+            _countdownLabel.Text = Mathf.CeilToInt(value).ToString();
+        else
+            _countdownLabel.Text = "Fight!";
+    }
+
+    private void OnStartBattleCountdownTweenCompleted()
+    {
+        _countdownLabel.Visible = false;
+        // TODO: Play "Fight"/"Hong" sound
+
         SetCharacterAnimation(_playerCharacter, "Walk");
         SetCharacterAnimation(_opponentCharacter, "Walk");
 
@@ -267,12 +318,12 @@ public class JudoLevel : Node2D, ILevel
         if (playerWon)
         {
             SetStatusLabelText("Perfect!");
-            PlayThrowAnimation(_playerCharacter, _opponentCharacter, 1.0f);
+            PlayThrowAnimation(_playerCharacter, _opponentCharacter, 1);
         }
         else
         {
             SetStatusLabelText("Really bad!");
-            PlayThrowAnimation(_opponentCharacter, _playerCharacter, -1.0f);
+            PlayThrowAnimation(_opponentCharacter, _playerCharacter, -1);
         }
     }
 

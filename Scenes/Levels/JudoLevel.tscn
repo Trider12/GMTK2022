@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Code/Levels/JudoLevel.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/Players/RedDieCharacter.tscn" type="PackedScene" id=2]
@@ -28,6 +28,10 @@ font_data = ExtResource( 7 )
 
 [sub_resource type="DynamicFont" id=17]
 size = 20
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=18]
+size = 50
 font_data = ExtResource( 7 )
 
 [node name="JudoLevel" type="Node2D"]
@@ -81,32 +85,36 @@ texture = ExtResource( 11 )
 offset = Vector2( -18, -25 )
 flip_h = true
 
-[node name="OmniLight_1" parent="Arena/Scaffolding" instance=ExtResource( 9 )]
+[node name="OmniLights" type="Node2D" parent="Arena/Scaffolding"]
+position = Vector2( -160, -9 )
 
-[node name="OmniLight_2" parent="Arena/Scaffolding" instance=ExtResource( 9 )]
-position = Vector2( -111, 5 )
+[node name="OmniLight_1" parent="Arena/Scaffolding/OmniLights" instance=ExtResource( 9 )]
+position = Vector2( 15, 14 )
 
-[node name="OmniLight_3" parent="Arena/Scaffolding" instance=ExtResource( 9 )]
-position = Vector2( -48, 5 )
+[node name="OmniLight_2" parent="Arena/Scaffolding/OmniLights" instance=ExtResource( 9 )]
+position = Vector2( 49, 14 )
 
-[node name="OmniLight_4" parent="Arena/Scaffolding" instance=ExtResource( 9 )]
-position = Vector2( -16, 5 )
+[node name="OmniLight_3" parent="Arena/Scaffolding/OmniLights" instance=ExtResource( 9 )]
+position = Vector2( 112, 14 )
 
-[node name="OmniLight_5" parent="Arena/Scaffolding" instance=ExtResource( 9 )]
-position = Vector2( 17, 5 )
+[node name="OmniLight_4" parent="Arena/Scaffolding/OmniLights" instance=ExtResource( 9 )]
+position = Vector2( 144, 14 )
 
-[node name="OmniLight_6" parent="Arena/Scaffolding" instance=ExtResource( 9 )]
-position = Vector2( 48, 5 )
+[node name="OmniLight_5" parent="Arena/Scaffolding/OmniLights" instance=ExtResource( 9 )]
+position = Vector2( 177, 14 )
 
-[node name="OmniLight_7" parent="Arena/Scaffolding" instance=ExtResource( 9 )]
-position = Vector2( 109, 5 )
+[node name="OmniLight_6" parent="Arena/Scaffolding/OmniLights" instance=ExtResource( 9 )]
+position = Vector2( 208, 14 )
 
-[node name="OmniLight_8" parent="Arena/Scaffolding" instance=ExtResource( 9 )]
-position = Vector2( 141, 5 )
+[node name="OmniLight_7" parent="Arena/Scaffolding/OmniLights" instance=ExtResource( 9 )]
+position = Vector2( 269, 14 )
 
-[node name="QTE" type="CanvasLayer" parent="."]
+[node name="OmniLight_8" parent="Arena/Scaffolding/OmniLights" instance=ExtResource( 9 )]
+position = Vector2( 301, 14 )
 
-[node name="HSlider" type="HSlider" parent="QTE"]
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="HSlider" type="HSlider" parent="HUD"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -64.0
@@ -123,12 +131,12 @@ value = 26.8
 editable = false
 scrollable = false
 
-[node name="GreenZone" type="ColorRect" parent="QTE/HSlider"]
+[node name="GreenZone" type="ColorRect" parent="HUD/HSlider"]
 margin_right = 40.0
 margin_bottom = 20.0
 color = Color( 0.54902, 1, 0.00392157, 0.721569 )
 
-[node name="HurryUpLabel" type="Label" parent="QTE/HSlider"]
+[node name="HurryUpLabel" type="Label" parent="HUD/HSlider"]
 anchor_top = 0.05
 anchor_right = 1.0
 anchor_bottom = 0.05
@@ -137,7 +145,7 @@ text = "Hurry up!"
 align = 1
 valign = 1
 
-[node name="StatusLabel" type="Label" parent="QTE"]
+[node name="StatusLabel" type="Label" parent="HUD"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -160.0
@@ -146,5 +154,21 @@ margin_right = 160.0
 margin_bottom = 68.0
 custom_fonts/font = SubResource( 17 )
 text = "Perfect!"
+align = 1
+valign = 1
+
+[node name="CountdownLabel" type="Label" parent="HUD"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -167.0
+margin_top = -45.0
+margin_right = 167.0
+margin_bottom = 45.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_fonts/font = SubResource( 18 )
+text = "Fight!"
 align = 1
 valign = 1

@@ -53,4 +53,3 @@ animations = [ {
 [node name="OmniLight" type="AnimatedSprite"]
 position = Vector2( -145, 5 )
 frames = SubResource( 11 )
-playing = true
