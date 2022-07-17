@@ -117,7 +117,27 @@ namespace Game.Code.Levels
         {
             _postAnimationDurationTimer.Stop(); // this is weird
 
-            SceneManager.Instance.LoadJudoLevel();
+            uint maxScore = (uint)_tiles.Length;
+            
+            if (GameManager.Instance.BluePlayerScore >= maxScore)
+            {
+                OnGameFinished(true);
+            }
+            else if (GameManager.Instance.RedPlayerScore >= maxScore)
+            {
+                OnGameFinished(false);
+            }
+            else
+            {
+                SceneManager.Instance.LoadJudoLevel();
+            }
+        }
+
+        private void OnGameFinished(bool playerHasWon)
+        {
+            // TODO: Reset this object
+
+            SceneManager.Instance.LoadMainMenu();
         }
     }
 }
